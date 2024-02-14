@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Console_RPG.Moveset;
 
 namespace Console_RPG
 {

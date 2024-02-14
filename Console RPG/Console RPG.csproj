@@ -6,4 +6,8 @@
     <RootNamespace>Console_RPG</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Moveset\" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Console_RPG.Moveset
+namespace Console_RPG
 {
     abstract class Move
     {

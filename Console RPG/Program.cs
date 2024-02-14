@@ -12,9 +12,16 @@ namespace Console_RPG
             AI jackson = new AI("Jackson", maxhp: 50, new Stats(defense: 1, speed: 4, debuffResist: 15, deathResist: 25, dodgeChance: 25));
             AI button = new AI("the button", maxhp: 1, new Stats(defense: 100, speed: 2, debuffResist: 0, deathResist: 0, dodgeChance: 95));
 
-            bool[] ranks = { true };
+            HealthPotion potion1 = new HealthPotion("Potion1", "one", 10, 5);
+            HealthPotion potiondead = new HealthPotion("Potiondead", "two", 20, 5, 2, -20);
 
-            Console.WriteLine(derek.stats.deathResist);
+            derek.UseItem(potion1, jackson);
+            button.UseItem(potion1, jackson);
+
+            Vigor vigor1 = new Vigor("invigorating", "mhm", 50, 30, 4, 15);
+            jaden.UseItem(vigor1, derek);
+
+            //bool[] ranks = { true };
         }
     }
 }

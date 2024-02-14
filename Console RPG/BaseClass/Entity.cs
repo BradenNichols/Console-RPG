@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Console_RPG.Moveset;
 
 namespace Console_RPG
 {
@@ -27,6 +26,11 @@ namespace Console_RPG
         public void Attack(Entity target, Move move)
         {
             move.Attack(this, target);
+        }
+
+        public void UseItem(Item item, Entity target)
+        {
+            item.Use(this, target);
         }
     }
 

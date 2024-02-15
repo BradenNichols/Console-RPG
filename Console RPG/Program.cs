@@ -21,6 +21,11 @@ namespace Console_RPG
             Vigor vigor1 = new Vigor("invigorating", "mhm", 50, 30, 4, 15);
             jaden.UseItem(vigor1, derek);
 
+            Location meow = new Location("car", "mew");
+            Location wawawa = new Location("idk", "in the land");
+
+            meow.SetNearbyLocations(south: wawawa);
+
             //bool[] ranks = { true };
         }
     }

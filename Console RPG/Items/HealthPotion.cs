@@ -13,7 +13,7 @@ namespace Console_RPG
 
         public override void Use(Entity user, Entity target)
         {
-            target.health = Math.Clamp(target.health - healAmount, 0, target.maxHealth);
+            target.health = Math.Clamp(target.health + healAmount, 0, target.maxHealth);
             Console.WriteLine("Healed " + target.name + " to " + target.health + " HP.");
         }
     }

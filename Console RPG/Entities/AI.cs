@@ -10,7 +10,13 @@ namespace Console_RPG
             
         }
 
-        public override Entity ChooseTarget(List<Entity> choices)
+        public override Move ChooseMove(List<Move> choices)
+        {
+            Random random = new Random();
+            return choices[random.Next(0, choices.Count)];
+        }
+
+        public override Entity ChooseTarget(Move move, List<Entity> choices)
         {
             Random random = new Random();
             return choices[random.Next(0, choices.Count)];

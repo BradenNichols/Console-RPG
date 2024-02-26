@@ -11,20 +11,17 @@ namespace Console_RPG
         public int minDamage;
         public int maxDamage;
 
-        public bool[] ranks;
+        public Random rand;
 
-        public Move(string name, int minDamage, int maxDamage, bool[] ranks = null)
+        public Move(string name, int minDamage, int maxDamage)
         {
             this.name = name;
             this.minDamage = minDamage;
             this.maxDamage = maxDamage;
 
-            this.ranks = ranks ?? new bool[4];
+            rand = new Random();
         }
 
-        public void Attack(Entity user, Entity target)
-        {
-            Console.WriteLine(user.name + " attacked " + target.name + " with " + name + "!");
-        }
+        public abstract void Attack(Entity user, Entity target);
     }
 }

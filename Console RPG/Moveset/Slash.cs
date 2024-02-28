@@ -13,7 +13,7 @@ namespace Console_RPG
 
         public override void Attack(Entity user, Entity target)
         {
-            int damage = rand.Next(minDamage, maxDamage);
+            int damage = user.random.Next(minDamage, maxDamage);
             target.Damage(damage);
 
             Console.WriteLine($"{user.name} attacked {target.name} with {name} and took {damage} damage!");

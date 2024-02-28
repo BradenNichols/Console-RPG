@@ -23,7 +23,7 @@ namespace Console_RPG
 
         // Round
 
-        public void BeginRound()
+        public void Start()
         {
             round++;
 
@@ -32,6 +32,19 @@ namespace Console_RPG
 
             foreach (Entity entity in turnOrder)
             {
+                if (enemies.TrueForAll(entity => entity.health <= 0))
+                {
+                    EndBattle(true);
+                    return;
+                } else if (party.TrueForAll(entity => entity.health <= 0))
+                {
+                    EndBattle(false);
+                    return;
+                }
+
+                if (entity.isDead == true)
+                    continue;
+
                 PrintRoundInfo();
 
                 Thread.Sleep(1000);
@@ -41,29 +54,67 @@ namespace Console_RPG
             }
 
             Thread.Sleep(1000);
-            BeginRound();
+            Start();
         }
+
+        void EndBattle(bool PartyAlive)
+        {
+            if (PartyAlive == false)
+            {
+                Console.WriteLine("L");
+            } else
+            {
+                Console.WriteLine("W");
+            }
+        }
+
+        // Round Helpers
 
         void PrintRoundInfo()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Round " + round);
-            Console.ForegroundColor = ConsoleColor.White;
 
-            // list hp, speed and other entity data for both teams
+            // Print Party
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            foreach (Entity entity in party)
+            {
+                Console.WriteLine("\n" + entity);
+            }
+
+            // Versus
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nVS");
+
+            // Print Enemies
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+
+            foreach (Entity entity in enemies)
+            {
+                Console.WriteLine("\n" + entity);
+            }
+
+            // Separator
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n-------------");
         }
 
         int TurnOrderCompare(Entity a, Entity b)
         {
             if (a.stats.speed > b.stats.speed)
             {
-                return -1;
+                return -1; // Lower index -> faster.
             } else if (a.stats.speed < b.stats.speed)
             {
-                return 1;
+                return 1; // Higher index -> slower.
             } else
             {
-                return 0;
+                return 0; // I dont know what happens
             }
         }
 

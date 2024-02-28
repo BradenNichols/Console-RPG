@@ -11,15 +11,11 @@ namespace Console_RPG
         public int minDamage;
         public int maxDamage;
 
-        public Random rand;
-
         public Move(string name, int minDamage, int maxDamage)
         {
             this.name = name;
             this.minDamage = minDamage;
             this.maxDamage = maxDamage;
-
-            rand = new Random();
         }
 
         public abstract void Attack(Entity user, Entity target);

@@ -5,7 +5,7 @@ namespace Console_RPG
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.CursorSize = 100;
             Console.Title = "actual peak";
@@ -41,7 +41,7 @@ namespace Console_RPG
             List<Entity> enemies = new List<Entity>() { jackson, button };
             
             Battle test = new Battle(party, enemies);
-            test.BeginRound();
+            test.Start();
         }
     }
 }

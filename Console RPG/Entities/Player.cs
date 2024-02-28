@@ -43,7 +43,8 @@ namespace Console_RPG
 
             foreach (Entity entity in choices)
             {
-                Console.WriteLine(entity.name);
+                if (entity.isDead == false)
+                    Console.WriteLine(entity.name);
             }
 
             while (true)
@@ -52,7 +53,7 @@ namespace Console_RPG
 
                 foreach (Entity entity in choices)
                 {
-                    if (choice.ToLower() == entity.name.ToLower())
+                    if (choice.ToLower() == entity.name.ToLower() && entity.isDead == false)
                     {
                         return entity;
                     }

@@ -6,7 +6,7 @@ namespace Console_RPG
 {
     class Slash : Move
     {
-        public Slash(int minDamage = 5, int maxDamage = 8) : base("Slash", minDamage, maxDamage)
+        public Slash(int minDamage = 8, int maxDamage = 29) : base("Slash", minDamage, maxDamage)
         {
             
         }

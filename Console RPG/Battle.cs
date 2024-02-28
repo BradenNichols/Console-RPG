@@ -61,10 +61,10 @@ namespace Console_RPG
         {
             if (PartyAlive == false)
             {
-                Console.WriteLine("L");
+                Console.WriteLine("The party dies..");
             } else
             {
-                Console.WriteLine("W");
+                Console.WriteLine("The party kills the bad man(s)");
             }
         }
 

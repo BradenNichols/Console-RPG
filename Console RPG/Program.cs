@@ -10,20 +10,25 @@ namespace Console_RPG
             Console.CursorSize = 100;
             Console.Title = "actual peak";
 
-            Player derek = new Player("Derek", maxhp: 30, new Stats(defense: 0, speed: 0, debuffResist: 20, deathResist: 65, dodgeChance: 50));
-            Player jaden = new Player("Jaden", maxhp: 150, new Stats(defense: 6, speed: 3, debuffResist: 40, deathResist: 80, dodgeChance: 6));
+            // Players
 
-            AI jackson = new AI("Jackson", maxhp: 50, new Stats(defense: 1, speed: 5, debuffResist: 15, deathResist: 25, dodgeChance: 25));
-            AI button = new AI("the button", maxhp: 1, new Stats(defense: 100, speed: 2, debuffResist: 0, deathResist: 0, dodgeChance: 95));
+            Player derek = new Player("Derek", maxhp: 30, 
+                new Stats(defense: 6, speed: 0, debuffResist: 20, deathResist: Entity.random.Next(10, 95), dodgeChance: Entity.random.Next(10, 35)));
+            
+            Player jaden = new Player("Jaden", maxhp: 60, 
+                new Stats(defense: 10, speed: 3, debuffResist: 40, deathResist: Entity.random.Next(40, 70), dodgeChance: Entity.random.Next(2, 20)));
+
+            // AI
+
+            AI duke = new AI("Duke Erisia", maxhp: 500, new Stats(defense: 0, speed: -5, debuffResist: 50, deathResist: 0, dodgeChance: Entity.random.Next(5, 15)));
+            AI wawawawawa = new AI("the button", maxhp: 1, new Stats(defense: 10, speed: 2, debuffResist: 0, deathResist: 0, dodgeChance: Entity.random.Next(50, 60)));
+
+            // Items
 
             HealthPotion potion1 = new HealthPotion("Potion1", "one", 10, 5);
             HealthPotion potiondead = new HealthPotion("Potiondead", "two", 20, 5, 2, -20);
 
-            //derek.UseItem(potion1, jackson);
-            //button.UseItem(potion1, jackson);
-
             Vigor vigor1 = new Vigor("invigorating", "mhm", 50, 30, 4, 15);
-            //jaden.UseItem(vigor1, derek);
 
             /*
             Location meow = new Location("car", "mew");
@@ -34,14 +39,14 @@ namespace Console_RPG
             derek.moveset.Add(new Slash());
             jaden.moveset.Add(new Slash());
 
-            jackson.moveset.Add(new Slash());
-            button.moveset.Add(new Slash());
+            duke.moveset.Add(new Slash(minDamage: 12, maxDamage: 30, critChance: 20));
+            wawawawawa.moveset.Add(new Slash(critChance: 80));
 
             List<Entity> party = new List<Entity>() { derek, jaden };
-            List<Entity> enemies = new List<Entity>() { jackson, button };
+            List<Entity> enemies = new List<Entity>() { duke, wawawawawa };
             
             Battle test = new Battle(party, enemies);
-            test.Start();
+            test.StartBattle();
         }
     }
 }

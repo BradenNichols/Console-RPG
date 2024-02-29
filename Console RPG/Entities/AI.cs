@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Console_RPG
 {
@@ -12,14 +13,13 @@ namespace Console_RPG
 
         public override Move ChooseMove(List<Move> choices)
         {
-            Random random = new Random();
-            return choices[random.Next(0, choices.Count)];
+            Thread.Sleep(1500 * (Entity.random.Next(14, 20) / 10));
+            return choices[Entity.random.Next(0, choices.Count)];
         }
 
         public override Entity ChooseTarget(Move move, List<Entity> choices)
         {
-            Random random = new Random();
-            return choices[random.Next(0, choices.Count)];
+            return choices[Entity.random.Next(0, choices.Count)];
         }
     }
 

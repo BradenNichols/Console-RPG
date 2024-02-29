@@ -14,7 +14,7 @@ namespace Console_RPG
         public override void Use(Entity user, Entity target)
         {
             target.stats.deathResist = Math.Clamp(target.stats.deathResist + resistAmount, 0, 95);
-            Console.WriteLine("increased " + target.name + " death resist to " + target.stats.deathResist + "%");
+            Console.WriteLine("Increased " + target.name + " death resist to " + target.stats.deathResist + "%.");
         }
     }
 }

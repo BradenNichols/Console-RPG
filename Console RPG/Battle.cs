@@ -21,9 +21,31 @@ namespace Console_RPG
             this.enemies = enemies;
         }
 
+        // Battle
+
+        public void StartBattle()
+        {
+            Entity.PrintWithColor("BATTLE START!", ConsoleColor.DarkYellow);
+            Thread.Sleep(1500);
+
+            StartRound();
+        }
+
+        void EndBattle(bool PartyAlive)
+        {
+            if (PartyAlive == false)
+            {
+                Console.WriteLine("The party dies..");
+            }
+            else
+            {
+                Console.WriteLine("The party kills the bad man(s)");
+            }
+        }
+
         // Round
 
-        public void Start()
+        void StartRound()
         {
             round++;
 
@@ -32,11 +54,11 @@ namespace Console_RPG
 
             foreach (Entity entity in turnOrder)
             {
-                if (enemies.TrueForAll(entity => entity.health <= 0))
+                if (enemies.TrueForAll(x => x.isDead == true))
                 {
                     EndBattle(true);
                     return;
-                } else if (party.TrueForAll(entity => entity.health <= 0))
+                } else if (party.TrueForAll(x => x.isDead == true))
                 {
                     EndBattle(false);
                     return;
@@ -54,18 +76,7 @@ namespace Console_RPG
             }
 
             Thread.Sleep(1000);
-            Start();
-        }
-
-        void EndBattle(bool PartyAlive)
-        {
-            if (PartyAlive == false)
-            {
-                Console.WriteLine("The party dies..");
-            } else
-            {
-                Console.WriteLine("The party kills the bad man(s)");
-            }
+            StartRound();
         }
 
         // Round Helpers
@@ -127,12 +138,13 @@ namespace Console_RPG
             Console.ForegroundColor = ConsoleColor.White; 
 
             Move move = entity.ChooseMove(entity.moveset);
-            Entity target = entity.ChooseTarget(move, GetOtherTeam(entity));
+            Entity target = entity.ChooseTarget(move, GetValidEnemies(GetOtherTeam(entity)));
 
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White;;
             entity.Attack(target, move);
 
             Thread.Sleep(2000);
+            Console.ResetColor();
         }
 
         // Helpers
@@ -146,6 +158,21 @@ namespace Console_RPG
             {
                 return party;
             }
+        }
+
+        public List<Entity> GetValidEnemies(List<Entity> enemies)
+        {
+            List<Entity> entities = new List<Entity>();
+
+            foreach (Entity entity in enemies)
+            {
+                if (entity.isDead == false)
+                {
+                    entities.Add(entity);
+                }
+            }
+
+            return entities;
         }
 
         public List<Entity> GetAllEntities()
@@ -163,13 +190,6 @@ namespace Console_RPG
             }
 
             return entities;
-        }
-
-        public List<Entity> GetTargets(Entity user, Move move)
-        {
-            List<Entity> targets = new List<Entity>();
-            // return all the targets that are valid within the move.ranks
-            return targets; 
         }
     }
 }

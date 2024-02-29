@@ -16,7 +16,7 @@ namespace Console_RPG
 
             foreach (Move move in choices)
             {
-                Console.WriteLine(move.name);
+                Console.WriteLine(move);
             }
 
             while (true)
@@ -25,7 +25,7 @@ namespace Console_RPG
 
                 foreach (Move move in choices)
                 {
-                    if (choice.ToLower() == move.name.ToLower())
+                    if (move.name.ToLower().Contains(choice.ToLower()))
                     {
                         return move;
                     }
@@ -43,8 +43,7 @@ namespace Console_RPG
 
             foreach (Entity entity in choices)
             {
-                if (entity.isDead == false)
-                    Console.WriteLine(entity.name);
+                Console.WriteLine(entity.name);
             }
 
             while (true)
@@ -53,8 +52,9 @@ namespace Console_RPG
 
                 foreach (Entity entity in choices)
                 {
-                    if (choice.ToLower() == entity.name.ToLower() && entity.isDead == false)
+                    if (entity.name.ToLower().Contains(choice.ToLower()))
                     {
+                        Console.WriteLine("");
                         return entity;
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 
@@ -59,6 +60,7 @@ namespace Console_RPG
 
         // Abstract Functions
 
+        public abstract string ChooseAction(List<string> choices);
         public abstract Move ChooseMove(List<Move> choices);
         public abstract Entity ChooseTarget(Move move, List<Entity> choices);
 
@@ -66,11 +68,16 @@ namespace Console_RPG
         
         public void Attack(Entity target, Move move)
         {
-            if (Entity.random.Next(1, 100) <= target.stats.dodgeChance)
+            if (Entity.random.Next(1, 100) <= move.missChance)
+            {
+                Entity.PrintWithColor($"The attack {move.name} MISSED {target.name}! ({move.missChance}%)", ConsoleColor.Gray);
+                return;
+            } 
+            else if (Entity.random.Next(1, 100) <= target.stats.dodgeChance)
             {
                 Entity.PrintWithColor($"{target.name} dodged {move.name}.. ({target.stats.dodgeChance}%)", ConsoleColor.DarkGreen);
                 return;
-            }
+            } 
 
             move.Attack(this, target);
         }
@@ -150,5 +157,21 @@ namespace Console_RPG
             Console.WriteLine(Text);
             Console.ForegroundColor = prevColor;
         }
+
+        /*
+        public static void PrintWithColor(string Text, byte[] colors, bool newLine = true)
+        {
+            string result = Entity.ColorText(Text, colors);
+
+            if (newLine == true)
+                Console.WriteLine(result);
+            else
+                Console.Write(result);
+        }
+
+        public static string ColorText(string Text, byte[] colors) // gimmicky, but doesnt work well enough
+        {
+            return $"\x1b[38;2;{colors[0]};{colors[1]};{colors[2]}m{Text}\x1b[37;0m";
+        }*/
     }
 }

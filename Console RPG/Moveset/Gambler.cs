@@ -5,9 +5,9 @@ using System.Threading;
 
 namespace Console_RPG
 {
-    class Slash : Move
+    class Gambler : Move
     {
-        public Slash(int minDamage = 8, int maxDamage = 29, int critChance = 12, int missChance = 0) : base("Slash", minDamage, maxDamage, critChance, missChance)
+        public Gambler(int minDamage = 6, int maxDamage = 12, int critChance = 80, int missChance = 40) : base("Gambler", minDamage, maxDamage, critChance, missChance)
         {
             
         }
@@ -18,7 +18,7 @@ namespace Console_RPG
 
             if (RollForCrit() == true)
             {
-                damage *= 2;
+                damage *= 8;
                 Console.WriteLine($"{user.name} attacked {target.name} with {name} and landed a {damage} damage CRIT!");
 
                 Thread.Sleep(1000);

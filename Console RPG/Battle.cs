@@ -135,13 +135,19 @@ namespace Console_RPG
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\n{entity.name}'s turn!\n");
-            Console.ForegroundColor = ConsoleColor.White; 
+            Console.ForegroundColor = ConsoleColor.White;
 
-            Move move = entity.ChooseMove(entity.moveset);
-            Entity target = entity.ChooseTarget(move, GetValidEnemies(GetOtherTeam(entity)));
+            string action = entity.ChooseAction(new List<string>() { "Attack" });
 
-            Console.ForegroundColor = ConsoleColor.White;;
-            entity.Attack(target, move);
+            if (action == "Attack")
+            {
+                Move move = entity.ChooseMove(entity.moveset);
+
+                Entity target = entity.ChooseTarget(move, GetValidEnemies(GetOtherTeam(entity)));
+
+                Console.ForegroundColor = ConsoleColor.White;
+                entity.Attack(target, move);
+            }
 
             Thread.Sleep(2000);
             Console.ResetColor();
@@ -193,3 +199,25 @@ namespace Console_RPG
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//clueless

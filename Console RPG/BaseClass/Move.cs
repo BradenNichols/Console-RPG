@@ -11,19 +11,24 @@ namespace Console_RPG
         public int minDamage;
         public int maxDamage;
         public int critChance;
+        public int missChance;
 
-        public Move(string name, int minDamage, int maxDamage, int critChance = 0)
+        public Move(string name, int minDamage, int maxDamage, int critChance = 0, int missChance = 0)
         {
             this.name = name;
             this.minDamage = minDamage;
             this.maxDamage = maxDamage;
             this.critChance = critChance;
+            this.missChance = missChance;
         }
 
         public override string ToString()
         {
             string Value = name;
             Value += $": {minDamage}-{maxDamage} DMG | {critChance}% CRIT";
+
+            if (missChance > 0)
+                Value += $" | {missChance}% MISS";
 
             return Value;
         }

@@ -10,14 +10,36 @@ namespace Console_RPG
 
         }
 
+        public override string ChooseAction(List<string> choices)
+        {
+            Console.WriteLine("What would you like to do?");
+
+            foreach (string action in choices)
+                Console.WriteLine(action);
+
+            while (true)
+            {
+                string choice = Console.ReadLine();
+
+                foreach (string action in choices)
+                {
+                    if (action.ToLower().Contains(choice.ToLower()))
+                    {
+                        Console.WriteLine("");
+                        return action;
+                    }
+                }
+
+                Console.WriteLine("Not a valid action. Please pick again.");
+            }
+        }
+
         public override Move ChooseMove(List<Move> choices)
         {
             Console.WriteLine("What move would you like to use?");
 
             foreach (Move move in choices)
-            {
                 Console.WriteLine(move);
-            }
 
             while (true)
             {
@@ -27,6 +49,7 @@ namespace Console_RPG
                 {
                     if (move.name.ToLower().Contains(choice.ToLower()))
                     {
+                        Console.WriteLine("");
                         return move;
                     }
                 }
@@ -42,9 +65,7 @@ namespace Console_RPG
             Console.WriteLine($"Who would you like to attack with {move.name}?");
 
             foreach (Entity entity in choices)
-            {
                 Console.WriteLine(entity.name);
-            }
 
             while (true)
             {

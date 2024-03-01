@@ -11,6 +11,11 @@ namespace Console_RPG
             
         }
 
+        public override string ChooseAction(List<string> choices)
+        {
+            return "Attack";
+        }
+
         public override Move ChooseMove(List<Move> choices)
         {
             Thread.Sleep(1500 * (Entity.random.Next(14, 20) / 10));

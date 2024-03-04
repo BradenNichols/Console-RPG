@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Console_RPG.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,15 +7,19 @@ namespace Console_RPG
 {
     class Location
     {
+        public static Location TheInn = new Location("The Inn", "lalalalala");
+
         public string name;
         public string description;
+        public LocationFeature feature;
 
         public Location north, east, south, west;
 
-        public Location(string name, string description)
+        public Location(string name, string description = "", LocationFeature feature = null)
         {
             this.name = name;
             this.description = description;
+            this.feature = feature;
         }
 
         public void SetNearbyLocations(Location north = null, Location east = null, Location south = null, Location west = null)

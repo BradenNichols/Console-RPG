@@ -15,6 +15,11 @@ namespace Console_RPG
         {
             return "Attack";
         }
+        public override Item ChooseItem(List<Item> choices)
+        {
+            Thread.Sleep(1500 * (Entity.random.Next(14, 20) / 10));
+            return choices[Entity.random.Next(0, choices.Count)];
+        }
 
         public override Move ChooseMove(List<Move> choices)
         {
@@ -22,11 +27,9 @@ namespace Console_RPG
             return choices[Entity.random.Next(0, choices.Count)];
         }
 
-        public override Entity ChooseTarget(Move move, List<Entity> choices)
+        public override Entity ChooseTarget(string moveName, List<Entity> choices)
         {
             return choices[Entity.random.Next(0, choices.Count)];
         }
     }
-
-    // Have different types of enemies / allies that inherit from AI
 }

@@ -61,8 +61,9 @@ namespace Console_RPG
         // Abstract Functions
 
         public abstract string ChooseAction(List<string> choices);
+        public abstract Item ChooseItem(List<Item> choices);
         public abstract Move ChooseMove(List<Move> choices);
-        public abstract Entity ChooseTarget(Move move, List<Entity> choices);
+        public abstract Entity ChooseTarget(string moveName, List<Entity> choices);
 
         // Non-Abstract Functions
         
@@ -70,7 +71,7 @@ namespace Console_RPG
         {
             if (Entity.random.Next(1, 100) <= move.missChance)
             {
-                Entity.PrintWithColor($"The attack {move.name} MISSED {target.name}! ({move.missChance}%)", ConsoleColor.Gray);
+                Entity.PrintWithColor($"The attack {move.name} MISSED {target.name}! ({move.missChance}%)", ConsoleColor.DarkGray);
                 return;
             } 
             else if (Entity.random.Next(1, 100) <= target.stats.dodgeChance)
@@ -85,6 +86,7 @@ namespace Console_RPG
         public void UseItem(Item item, Entity target)
         {
             item.Use(this, target);
+            backpack.Remove(item);
         }
 
         // HP Stuff
@@ -95,11 +97,13 @@ namespace Console_RPG
                 return;
 
             health = Math.Clamp(health + amount, 0, maxHealth);
-            Console.WriteLine($"Healed {name} to {health} HP.");
+            Console.WriteLine($"Healed {name} {amount} HP, bringing them to {health} HP.");
 
             if (health > 0 && onDeathsDoor == true)
             {
                 onDeathsDoor = false;
+
+                Thread.Sleep(1000);
                 Entity.PrintWithColor($"{name} is no longer on Death's Door!", ConsoleColor.DarkGreen);
             }
         }
@@ -149,12 +153,17 @@ namespace Console_RPG
 
         // Helpers
 
-        public static void PrintWithColor(string Text, ConsoleColor color)
+        public static void PrintWithColor(string Text, ConsoleColor color, bool newLine = true)
         {
             ConsoleColor prevColor = Console.ForegroundColor;
 
             Console.ForegroundColor = color;
-            Console.WriteLine(Text);
+
+            if (newLine == true)
+                Console.WriteLine(Text);
+            else 
+                Console.Write(Text);
+
             Console.ForegroundColor = prevColor;
         }
 

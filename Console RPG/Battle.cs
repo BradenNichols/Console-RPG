@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Console_RPG.BaseClass;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,8 @@ using System.Threading;
 namespace Console_RPG
 {
     //b nbg vv bcbv n mc x (mario code)
-    class Battle
+    //i8 yhfguthgr (goku code)
+    class Battle: LocationFeature
     {
         public List<Entity> party;
         public List<Entity> enemies;
@@ -15,13 +17,18 @@ namespace Console_RPG
 
         public int round = 0;
 
-        public Battle(List<Entity> party, List<Entity> enemies)
+        public Battle(List<Entity> party, List<Entity> enemies): base(false)
         {
             this.party = party;
             this.enemies = enemies;
         }
 
         // Battle
+
+        public override void Resolve()
+        {
+            StartBattle();
+        }
 
         public void StartBattle()
         {
@@ -137,16 +144,50 @@ namespace Console_RPG
             Console.WriteLine($"\n{entity.name}'s turn!\n");
             Console.ForegroundColor = ConsoleColor.White;
 
-            string action = entity.ChooseAction(new List<string>() { "Attack" });
+            string action = "";
+            int stupidTimes = 0;
 
+            while (true)
+            {
+                action = entity.ChooseAction(new List<string>() { "Attack", "Item" });
+
+                if (action == "Item" && entity.backpack.Count == 0)
+                {
+                    stupidTimes++;
+
+                    if (stupidTimes == 8)
+                    {
+                        Entity.PrintWithColor("ok fine u so stupid u get item\n", ConsoleColor.DarkCyan);
+                        entity.backpack.Add(new HealthPotion("stupid potion", healAmount: 2));
+                        Thread.Sleep(1500);
+
+                        break;
+                    }
+
+                    Entity.PrintWithColor("haha u stupid u got no item\n", ConsoleColor.DarkCyan);
+                    Thread.Sleep(1500);
+
+                    continue;
+                }
+
+                break;
+            }
+            
             if (action == "Attack")
             {
                 Move move = entity.ChooseMove(entity.moveset);
 
-                Entity target = entity.ChooseTarget(move, GetValidEnemies(GetOtherTeam(entity)));
+                Entity target = entity.ChooseTarget(move.name, GetValid(GetTeam(entity, otherTeam: true)));
 
                 Console.ForegroundColor = ConsoleColor.White;
                 entity.Attack(target, move);
+            } else if (action == "Item")
+            {
+                Item item = entity.ChooseItem(entity.backpack);
+                Entity target = entity.ChooseTarget(item.name, GetValid(GetTeam(entity, otherTeam: false)));
+
+                Console.ForegroundColor = ConsoleColor.White;
+                entity.UseItem(item, target);
             }
 
             Thread.Sleep(2000);
@@ -155,27 +196,31 @@ namespace Console_RPG
 
         // Helpers
 
-        public List<Entity> GetOtherTeam(Entity entity)
+        public List<Entity> GetTeam(Entity entity, bool otherTeam = false)
         {
-            if (party.Find(x => x.name == entity.name) != null)
+            if (otherTeam == false)
             {
-                return enemies;
+                if (party.Find(x => x.name == entity.name) != null)
+                    return party;
+                else
+                    return enemies;
             } else
             {
-                return party;
+                if (party.Find(x => x.name == entity.name) != null)
+                    return enemies;
+                else
+                    return party;
             }
         }
 
-        public List<Entity> GetValidEnemies(List<Entity> enemies)
+        public List<Entity> GetValid(List<Entity> group)
         {
             List<Entity> entities = new List<Entity>();
 
-            foreach (Entity entity in enemies)
+            foreach (Entity entity in group)
             {
                 if (entity.isDead == false)
-                {
                     entities.Add(entity);
-                }
             }
 
             return entities;

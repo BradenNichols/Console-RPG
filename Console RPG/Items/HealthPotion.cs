@@ -6,7 +6,7 @@ namespace Console_RPG
     {
         public int healAmount;
 
-        public HealthPotion(string name, string description = "", int shopPrice = 0, int sellPrice = 0, int weight = 1, int healAmount = 10): base(name, description, shopPrice, sellPrice, weight)
+        public HealthPotion(string name, string description = "", int healAmount = 10, int shopPrice = 0) : base(name, description, shopPrice)
         {
             this.healAmount = healAmount;
         }

@@ -2,11 +2,11 @@
 
 namespace Console_RPG
 {
-    class Vigor : Item
+    class Vigor : Equipment
     {
         public int resistAmount;
 
-        public Vigor(string name, string description, int shopPrice, int sellPrice, int weight = 1, int resistAmount = 10): base(name, description, shopPrice, sellPrice, weight)
+        public Vigor(string name, string description, int shopPrice, int resistAmount = 10): base(name, description, shopPrice)
         {
             this.resistAmount = resistAmount;
         }

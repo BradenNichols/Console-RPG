@@ -16,6 +16,7 @@ namespace Console_RPG
         private List<Entity> turnOrder;
 
         public int round = 0;
+        private bool hasGottenItem = false;
 
         public Battle(List<Entity> party, List<Entity> enemies): base(false)
         {
@@ -32,7 +33,7 @@ namespace Console_RPG
 
         public void StartBattle()
         {
-            Entity.PrintWithColor("BATTLE START!", ConsoleColor.DarkYellow);
+            Program.PrintWithColor("BATTLE START!", ConsoleColor.DarkYellow);
             Thread.Sleep(1500);
 
             StartRound();
@@ -157,14 +158,23 @@ namespace Console_RPG
 
                     if (stupidTimes == 8)
                     {
-                        Entity.PrintWithColor("ok fine u so stupid u get item\n", ConsoleColor.DarkCyan);
+                        if (hasGottenItem == true)
+                        {
+                            Program.PrintWithColor("lol u dont get another one\n", ConsoleColor.DarkCyan);
+                            Thread.Sleep(1500);
+                            break;
+                        }
+
+                        Program.PrintWithColor("ok fine u so stupid u get item\n", ConsoleColor.DarkCyan);
                         entity.backpack.Add(new HealthPotion("stupid potion", healAmount: 2));
+
+                        hasGottenItem = true;
                         Thread.Sleep(1500);
 
                         break;
                     }
 
-                    Entity.PrintWithColor("haha u stupid u got no item\n", ConsoleColor.DarkCyan);
+                    Program.PrintWithColor("haha u stupid u got no item\n", ConsoleColor.DarkCyan);
                     Thread.Sleep(1500);
 
                     continue;

@@ -12,13 +12,12 @@ namespace Console_RPG
         public int sellPrice;
         public int weight;
 
-        public Item(string name, string description, int shopPrice, int sellPrice, int weight = 1)
+        public Item(string name, string description, int shopPrice = 0)
         {
             this.name = name;
             this.description = description;
             this.shopPrice = shopPrice;
-            this.sellPrice = sellPrice;
-            this.weight = weight;
+            this.sellPrice = shopPrice / 2;
         }
 
         public abstract void Use(Entity user, Entity target);

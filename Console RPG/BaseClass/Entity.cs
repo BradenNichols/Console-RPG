@@ -21,6 +21,7 @@ namespace Console_RPG
 
         public List<Move> moveset;
         public List<Item> backpack;
+        public List<Equipment> equipment;
         
         public Entity(string name, int maxhp = 100, Stats stats = new Stats(), List<Move> moveset = null, List<Item> backpack = null)
         {
@@ -32,8 +33,10 @@ namespace Console_RPG
             this.isDead = false;
 
             this.stats = stats;
+
             this.moveset = moveset ?? new List<Move>();
             this.backpack = backpack ?? new List<Item>();
+            this.equipment = equipment ?? new List<Equipment>();
         }
 
         // Overrides
@@ -71,12 +74,12 @@ namespace Console_RPG
         {
             if (Entity.random.Next(1, 100) <= move.missChance)
             {
-                Entity.PrintWithColor($"The attack {move.name} MISSED {target.name}! ({move.missChance}%)", ConsoleColor.DarkGray);
+                Program.PrintWithColor($"The attack {move.name} MISSED {target.name}! ({move.missChance}%)", ConsoleColor.DarkGray);
                 return;
             } 
             else if (Entity.random.Next(1, 100) <= target.stats.dodgeChance)
             {
-                Entity.PrintWithColor($"{target.name} dodged {move.name}.. ({target.stats.dodgeChance}%)", ConsoleColor.DarkGreen);
+                Program.PrintWithColor($"{target.name} dodged {move.name}.. ({target.stats.dodgeChance}%)", ConsoleColor.DarkGreen);
                 return;
             } 
 
@@ -104,7 +107,7 @@ namespace Console_RPG
                 onDeathsDoor = false;
 
                 Thread.Sleep(1000);
-                Entity.PrintWithColor($"{name} is no longer on Death's Door!", ConsoleColor.DarkGreen);
+                Program.PrintWithColor($"{name} is no longer on Death's Door!", ConsoleColor.DarkGreen);
             }
         }
 
@@ -122,10 +125,10 @@ namespace Console_RPG
                 if (onDeathsDoor == false && stats.deathResist > 0)
                 {
                     onDeathsDoor = true;
-                    Entity.PrintWithColor($"{name} is now on Death's Door!", ConsoleColor.DarkRed);
+                    Program.PrintWithColor($"{name} is now on Death's Door!", ConsoleColor.DarkRed);
                 } else if (onDeathsDoor == true)
                 {
-                    Entity.PrintWithColor($"\nRolling chance to survive.. ({stats.deathResist}%)", ConsoleColor.DarkRed);
+                    Program.PrintWithColor($"\nRolling chance to survive.. ({stats.deathResist}%)", ConsoleColor.DarkRed);
                     Thread.Sleep(2000);
 
                     int result = Entity.random.Next(1, 100);
@@ -135,7 +138,7 @@ namespace Console_RPG
                     else
                     {
                         stats.deathResist = Math.Clamp(stats.deathResist - 10, 0, 100);
-                        Entity.PrintWithColor($"{name} survived..", ConsoleColor.DarkCyan);
+                        Program.PrintWithColor($"{name} survived..", ConsoleColor.DarkCyan);
                     }
                 } else
                     Kill();
@@ -148,39 +151,7 @@ namespace Console_RPG
             isDead = true;
             health = 0;
 
-            Entity.PrintWithColor($"{name} died.", ConsoleColor.Red);
+            Program.PrintWithColor($"{name} died.", ConsoleColor.Red);
         }
-
-        // Helpers
-
-        public static void PrintWithColor(string Text, ConsoleColor color, bool newLine = true)
-        {
-            ConsoleColor prevColor = Console.ForegroundColor;
-
-            Console.ForegroundColor = color;
-
-            if (newLine == true)
-                Console.WriteLine(Text);
-            else 
-                Console.Write(Text);
-
-            Console.ForegroundColor = prevColor;
-        }
-
-        /*
-        public static void PrintWithColor(string Text, byte[] colors, bool newLine = true)
-        {
-            string result = Entity.ColorText(Text, colors);
-
-            if (newLine == true)
-                Console.WriteLine(result);
-            else
-                Console.Write(result);
-        }
-
-        public static string ColorText(string Text, byte[] colors) // gimmicky, but doesnt work well enough
-        {
-            return $"\x1b[38;2;{colors[0]};{colors[1]};{colors[2]}m{Text}\x1b[37;0m";
-        }*/
     }
 }

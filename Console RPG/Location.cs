@@ -2,30 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Console_RPG
 {
     class Location
     {
         // ETREAN SEA
-        public static Location StarterInn = new Location(name: "Isle of Vigils", description: "lalalalala",
+        public static Location StarterInn = new Location(name: "Isle of Vigils", description: "A starting place for warriors.",
             north: StarterSea);
 
-        public static Location StarterSea = new Location(name: "Etrean Sea", description: "lalalalala",
+        public static Location StarterSea = new Location(name: "Etrean Sea", description: "Something lurkes in the waves..",
             north: ErisiaShores, south: StarterInn);
 
-        public static Location ErisiaShores = new Location(name: "Erisian Shores", description: "lalalalala",
-            east: LowerErisia, south: StarterSea);
+        public static Location ErisiaShores = new Location(name: "Erisian Shores", description: "Shores to the Erisia Island.",
+            east: LowerErisia, south: StarterSea, featureType: "ErisiaShores");
 
         // ERISIA
-        public static Location LowerErisia = new Location(name: "Lower Erisia", description: "lalalalala",
-            east: BanditCamp, north: UpperErisia, west: ErisiaShores);
+        public static Location LowerErisia = new Location(name: "Lower Erisia", description: "A land lost, now made a battleground for warriors know not why they fight.",
+            east: BanditCamp, north: UpperErisia, west: ErisiaShores, featureType: "LowerErisia");
 
-        public static Location BanditCamp = new Location(name: "Bandit Camp", description: "lalalalala",
-            east: SharkoCave, west: LowerErisia, north: UpperErisia);
+        public static Location BanditCamp = new Location(name: "Bandit Camp", description: "hmm i wonder if people are here",
+            east: SharkoCave, west: LowerErisia, north: UpperErisia, featureType: "BanditCamp");
 
-        public static Location SharkoCave = new Location(name: "Unknown Cave", description: "lalalalala",
-            east: UpperErisia, west: BanditCamp);
+        public static Location SharkoCave = new Location(name: "Unknown Cave", description: "...?",
+            east: UpperErisia, west: BanditCamp, featureType: "SharkoCave");
         
         public static Location UpperErisia = new Location(name: "Upper Erisia", description: "lalalalala",
             east: Gardens, west: SharkoCave);
@@ -47,12 +48,12 @@ namespace Console_RPG
 
         public Location north, east, south, west;
 
-        public Location(string name, string description = "", LocationFeature feature = null, Location north = null, Location east = null, Location south = null, Location west = null)
+        public Location(string name, string description = "", string featureType = "", Location north = null, Location east = null, Location south = null, Location west = null)
         {
             this.name = name;
             this.description = description;
-            this.feature = feature;
-        
+
+            SetLocationFeature(featureType);
             SetNearbyLocations(north, east, south, west);
         }
 
@@ -76,9 +77,38 @@ namespace Console_RPG
                 west.east = this;
         }
 
+        // Set Feature
+
+        void SetLocationFeature(string featureType)
+        {
+            LocationFeature feature = null;
+
+            if (featureType == "ErisiaShores")
+            {
+                List<string> enemies = new List<string>() { "Bandit", "Bandit" };
+
+                if (Entity.random.Next(1, 100) <= 50)
+                    enemies.Add("Bandit");
+
+                feature = new Battle(enemies);
+            } else if (featureType == "LowerErisia")
+            {
+                List<string> enemies = new List<string>() { "Bandit", "Bandit", "Strong Bandit" };
+                feature = new Battle(enemies);
+            }
+
+            this.feature = feature;
+        }
+
+        // Resolve
+
         public void Resolve()
         {
-            Console.WriteLine("You find yourself in " + name + ": " + description);
+            Program.PrintWithColor($"--- {name} ---\n{description}\n", ConsoleColor.Yellow);
+            Thread.Sleep(2500);
+
+            if (!(feature is null))
+                feature.Resolve();
 
             List<string> choices = new List<string>();
 

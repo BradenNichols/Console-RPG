@@ -23,7 +23,7 @@ namespace Console_RPG
         public List<Item> backpack;
         public List<Equipment> equipment;
         
-        public Entity(string name, int maxhp = 100, Stats stats = new Stats(), List<Move> moveset = null, List<Item> backpack = null)
+        public Entity(string name, int maxhp = 50, Stats stats = new Stats(), List<Move> moveset = null, List<Item> backpack = null, List<Equipment> equipment = null)
         {
             this.name = name;
             this.health = maxhp;
@@ -125,6 +125,7 @@ namespace Console_RPG
                 if (onDeathsDoor == false && stats.deathResist > 0)
                 {
                     onDeathsDoor = true;
+                    Thread.Sleep(1000);
                     Program.PrintWithColor($"{name} is now on Death's Door!", ConsoleColor.DarkRed);
                 } else if (onDeathsDoor == true)
                 {
@@ -151,6 +152,7 @@ namespace Console_RPG
             isDead = true;
             health = 0;
 
+            Thread.Sleep(1000);
             Program.PrintWithColor($"{name} died.", ConsoleColor.Red);
         }
     }

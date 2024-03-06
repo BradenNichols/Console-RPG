@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 using System.Threading;
 
@@ -18,10 +19,57 @@ namespace Console_RPG
         public int round = 0;
         private bool hasGottenItem = false;
 
-        public Battle(List<Entity> party, List<Entity> enemies): base(false)
+        public Battle(List<string> enemies): base(false)
         {
-            this.party = party;
-            this.enemies = enemies;
+            this.party = Player.party;
+            this.enemies = new List<Entity>();
+
+            // Make Enemies
+
+            int entityIndex = 1;
+
+            foreach(string enemyType in enemies)
+            {
+                this.enemies.Add(CreateEnemy(enemyType, entityIndex));
+                entityIndex++;
+            }
+        }
+
+        // Battles
+
+        AI CreateEnemy(string EnemyType, int entityIndex)
+        {
+            // Creation
+            int maxHP = default;
+            Stats stats = default;
+
+            List<Move> moveset = new List<Move>();
+            List<Item> backpack = new List<Item>();
+            List<Equipment> equipment = new List<Equipment>();
+
+            if (EnemyType == "Bandit")
+            {
+                stats = new Stats(speed: Entity.random.Next(2, 5), defense: Entity.random.Next(-1, 4), dodgeChance: Entity.random.Next(0, 15));
+                maxHP = 40;
+
+                moveset.Add(new Slash(missChance: 5, minDamage: 6, maxDamage: 16, critChance: 4));
+            }
+            else if (EnemyType == "Strong Bandit")
+            {
+                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25));
+                maxHP = 75;
+
+                Slash slash = new Slash(minDamage: 14, maxDamage: 20, critChance: 15, missChance: 10);
+                slash.name = "Super Slash";
+
+                moveset.Add(slash);
+            }
+            else
+            {
+                moveset.Add(new Slash());
+            }
+
+            return new AI(name: $"{EnemyType} {entityIndex}", maxHP, stats, moveset, backpack, equipment);
         }
 
         // Battle
@@ -33,6 +81,8 @@ namespace Console_RPG
 
         public void StartBattle()
         {
+            Console.Clear();
+
             Program.PrintWithColor("BATTLE START!", ConsoleColor.DarkYellow);
             Thread.Sleep(1500);
 
@@ -41,14 +91,15 @@ namespace Console_RPG
 
         void EndBattle(bool PartyAlive)
         {
+            Thread.Sleep(1000);
+
             if (PartyAlive == false)
-            {
-                Console.WriteLine("The party dies..");
-            }
+                Program.PrintWithColor("Sent to the Depths..", ConsoleColor.DarkRed);
             else
-            {
-                Console.WriteLine("The party kills the bad man(s)");
-            }
+                Program.PrintWithColor("\nBattle won!", ConsoleColor.Green);
+
+            Thread.Sleep(3000);
+            Console.Clear();
         }
 
         // Round
@@ -62,16 +113,6 @@ namespace Console_RPG
 
             foreach (Entity entity in turnOrder)
             {
-                if (enemies.TrueForAll(x => x.isDead == true))
-                {
-                    EndBattle(true);
-                    return;
-                } else if (party.TrueForAll(x => x.isDead == true))
-                {
-                    EndBattle(false);
-                    return;
-                }
-
                 if (entity.isDead == true)
                     continue;
 
@@ -79,6 +120,17 @@ namespace Console_RPG
 
                 Thread.Sleep(1000);
                 DoTurn(entity);
+
+                if (enemies.TrueForAll(x => x.isDead == true))
+                {
+                    EndBattle(true);
+                    return;
+                }
+                else if (party.TrueForAll(x => x.isDead == true))
+                {
+                    EndBattle(false);
+                    return;
+                }
 
                 Console.Clear();
             }

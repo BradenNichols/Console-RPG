@@ -15,18 +15,10 @@ namespace Console_RPG
 
             // Party
 
-            Player lapis = new Player("Lapis", maxhp: 20, 
-                new Stats(defense: Entity.random.Next(2, 8), speed: 0, debuffResist: 20, deathResist: Entity.random.Next(1, 85), dodgeChance: Entity.random.Next(1, 70)));
-            
-            Player goku = new Player("Goku", maxhp: 800, 
-                new Stats(defense: Entity.random.Next(-180, -50), speed: 25, debuffResist: 40, deathResist: Entity.random.Next(80, 95), dodgeChance: Entity.random.Next(1, 2)));
+            Player.player1.moveset.Add(new Slash());
+            Player.player1.moveset.Add(new Gambler());
 
-            lapis.moveset.Add(new Slash());
-            lapis.moveset.Add(new Gambler());
-
-            goku.moveset.Add(new Slash(critChance: 0, maxDamage: 52));
-
-            List<Entity> party = new List<Entity>() { lapis, goku };
+            Player.player2.moveset.Add(new Slash(critChance: 0, maxDamage: 52));
 
             // AI
             /*

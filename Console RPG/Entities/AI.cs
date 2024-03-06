@@ -6,7 +6,7 @@ namespace Console_RPG
 {
     class AI : Entity
     {
-        public AI(string name, int maxhp = default, Stats stats = default) : base(name, maxhp, stats)
+        public AI(string name, int maxhp = default, Stats stats = default, List<Move> moveset = null, List<Item> backpack = null, List<Equipment> equipment = null) : base(name, maxhp, stats, moveset, backpack, equipment)
         {
             
         }

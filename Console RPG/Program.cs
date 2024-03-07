@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 
 namespace Console_RPG
 {
@@ -19,6 +20,11 @@ namespace Console_RPG
             Player.player1.moveset.Add(new Gambler());
 
             Player.player2.moveset.Add(new Slash(critChance: 0, maxDamage: 52));
+
+            Player.player1.backpack.Add(new HealthPotion("Small Potion", healAmount: 25));
+
+            Player.player2.backpack.Add(new HealthPotion("Goku Potion", healAmount: 80));
+            Player.player2.backpack.Add(new HealthPotion("Small Potion", healAmount: 25));
 
             // AI
             /*
@@ -72,21 +78,27 @@ namespace Console_RPG
             return name;
         }
 
-        public static T ChooseSomething<T>(List<T> choices)
+        public static T ChooseSomething<T>(List<T> choices, bool printClass = false, bool canExit = false)
         {
             foreach (T action in choices)
             {
-                if (action is Move)
+                if (printClass == true)
                     Console.WriteLine(action);
                 else
                     Console.WriteLine(GetNameOfT<T>(action));
             }
+
+            if (canExit == true)
+                Console.WriteLine("Exit");
 
             PrintWithColor("Input: ", ConsoleColor.DarkGray, newLine: false);
 
             while (true)
             {
                 string choice = Console.ReadLine();
+
+                if (choice.ToLower().Contains("exit"))
+                    return default;
 
                 foreach (T action in choices)
                 {

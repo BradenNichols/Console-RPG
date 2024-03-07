@@ -20,6 +20,11 @@ namespace Console_RPG
             this.sellPrice = shopPrice / 2;
         }
 
+        public override string ToString()
+        {
+            return $"{name}: {shopPrice}¢";
+        }
+
         public abstract void Use(Entity user, Entity target);
     }
 }

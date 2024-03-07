@@ -19,11 +19,11 @@ namespace Console_RPG
             if (RollForCrit() == true)
             {
                 damage *= 8;
-                Console.WriteLine($"{user.name} attacked {target.name} with {name} and landed a {damage} (-{target.stats.defense} DEF) damage CRIT!");
+                Console.WriteLine($"{user.name} attacked {target.name} with {name} and landed a {damage} ({target.stats.defense} DEF) damage CRIT!");
 
                 Thread.Sleep(1000);
             } else
-                Console.WriteLine($"{user.name} attacked {target.name} with {name} and dealt {damage} (-{target.stats.defense} DEF) damage!");
+                Console.WriteLine($"{user.name} attacked {target.name} with {name} and dealt {damage} ({target.stats.defense} DEF) damage!");
 
             target.Damage(damage);
         }

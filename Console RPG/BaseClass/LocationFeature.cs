@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Console_RPG.BaseClass
+namespace Console_RPG
 {
     abstract class LocationFeature
     {

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static System.Collections.Specialized.BitVector32;
-using System.Drawing;
 
 namespace Console_RPG
 {
@@ -14,6 +12,8 @@ namespace Console_RPG
             new Stats(defense: Entity.random.Next(-50, -20), speed: 15, debuffResist: 40, deathResist: Entity.random.Next(80, 95), dodgeChance: Entity.random.Next(1, 2)));
 
         public static List<Entity> party = new List<Entity> { player1, player2 };
+
+        public static int coins = 0;
 
         public Player(string name, int maxhp = default, Stats stats = default) : base(name, maxhp, stats)
         {
@@ -34,7 +34,7 @@ namespace Console_RPG
         public override Move ChooseMove(List<Move> choices)
         {
             Console.WriteLine("What move would you like to use?");
-            return Program.ChooseSomething<Move>(choices);
+            return Program.ChooseSomething<Move>(choices, true);
         }
 
         public override Entity ChooseTarget(string moveName, List<Entity> choices)

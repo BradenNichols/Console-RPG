@@ -1,9 +1,5 @@
-﻿using Console_RPG.BaseClass;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Text;
 using System.Threading;
 
 namespace Console_RPG
@@ -49,20 +45,37 @@ namespace Console_RPG
 
             if (EnemyType == "Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(2, 5), defense: Entity.random.Next(-1, 4), dodgeChance: Entity.random.Next(0, 15));
+                stats = new Stats(speed: Entity.random.Next(2, 5), defense: Entity.random.Next(-1, 4), dodgeChance: Entity.random.Next(0, 15), coinDropAmount: Entity.random.Next(2, 4));
                 maxHP = 40;
 
                 moveset.Add(new Slash(missChance: 5, minDamage: 6, maxDamage: 16, critChance: 4));
             }
             else if (EnemyType == "Strong Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25));
+                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25), coinDropAmount: Entity.random.Next(4, 8));
                 maxHP = 75;
 
                 Slash slash = new Slash(minDamage: 14, maxDamage: 20, critChance: 15, missChance: 10);
                 slash.name = "Super Slash";
 
                 moveset.Add(slash);
+            }
+            else if (EnemyType == "Gambler Bandit")
+            {
+                stats = new Stats(speed: Entity.random.Next(-5, 15), defense: 0, dodgeChance: Entity.random.Next(50, 90), deathResist: Entity.random.Next(0, 25), coinDropAmount: Entity.random.Next(5, 20));
+                maxHP = 20;
+
+                Gambler gambler = new Gambler(minDamage: 12, maxDamage: 16, critChance: 90, missChance: 50);
+                moveset.Add(gambler);
+            }
+            else if (EnemyType == "Sharko")
+            {
+                // TODO: Need to make this
+                stats = new Stats(speed: Entity.random.Next(2, 6), defense: 5, dodgeChance: Entity.random.Next(5, 10), deathResist: 0, coinDropAmount: Entity.random.Next(6, 12));
+                maxHP = 100;
+
+                Gambler gambler = new Gambler(minDamage: 12, maxDamage: 16, critChance: 90, missChance: 50);
+                moveset.Add(gambler);
             }
             else
             {
@@ -84,7 +97,7 @@ namespace Console_RPG
             Console.Clear();
 
             Program.PrintWithColor("BATTLE START!", ConsoleColor.DarkYellow);
-            Thread.Sleep(1500);
+            Thread.Sleep(2000);
 
             StartRound();
         }
@@ -96,7 +109,17 @@ namespace Console_RPG
             if (PartyAlive == false)
                 Program.PrintWithColor("Sent to the Depths..", ConsoleColor.DarkRed);
             else
-                Program.PrintWithColor("\nBattle won!", ConsoleColor.Green);
+            {
+                Program.PrintWithColor("\nBattle won!", ConsoleColor.Cyan);
+
+                int coinsGained = 0;
+
+                foreach(Entity entity in enemies)
+                    coinsGained += entity.stats.coinDropAmount;
+
+                Program.PrintWithColor($"{coinsGained}¢ acquired!", ConsoleColor.Cyan);
+                Player.coins += coinsGained;
+            }
 
             Thread.Sleep(3000);
             Console.Clear();

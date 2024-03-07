@@ -1,5 +1,4 @@
-﻿using Console_RPG.BaseClass;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -10,10 +9,10 @@ namespace Console_RPG
     {
         // ETREAN SEA
         public static Location StarterInn = new Location(name: "Isle of Vigils", description: "A starting place for warriors.",
-            north: StarterSea);
+            north: StarterSea, featureType: "StarterInn");
 
         public static Location StarterSea = new Location(name: "Etrean Sea", description: "Something lurkes in the waves..",
-            north: ErisiaShores, south: StarterInn);
+            north: ErisiaShores, south: StarterInn, featureType: "StarterSea");
 
         public static Location ErisiaShores = new Location(name: "Erisian Shores", description: "Shores to the Erisia Island.",
             east: LowerErisia, south: StarterSea, featureType: "ErisiaShores");
@@ -29,7 +28,7 @@ namespace Console_RPG
             east: UpperErisia, west: BanditCamp, featureType: "SharkoCave");
         
         public static Location UpperErisia = new Location(name: "Upper Erisia", description: "lalalalala",
-            east: Gardens, west: SharkoCave);
+            east: Gardens, west: SharkoCave, featureType: "UpperErisia");
 
         public static Location Gardens = new Location(name: "Burning Stone Gardens", description: "lalalalala",
             south: DukesManor, north: UpperErisia);
@@ -91,10 +90,21 @@ namespace Console_RPG
                     enemies.Add("Bandit");
 
                 feature = new Battle(enemies);
-            } else if (featureType == "LowerErisia")
+            }
+            else if (featureType == "LowerErisia")
             {
                 List<string> enemies = new List<string>() { "Bandit", "Bandit", "Strong Bandit" };
                 feature = new Battle(enemies);
+            } else if (featureType == "BanditCamp")
+            {
+                List<string> enemies = new List<string>() { "Gambler Bandit", "Strong Bandit" };
+                feature = new Battle(enemies);
+            } else if (featureType == "UpperErisia")
+            {
+                List<Item> items = new List<Item>() { new HealthPotion("Good Potion", healAmount: 50, shopPrice: 15) };
+                items.Add(new HealthPotion("Funky Potion", healAmount: Entity.random.Next(-20, 70), shopPrice: 10));
+
+                feature = new Shop("Derek", "hey man whats up queso", items);
             }
 
             this.feature = feature;
@@ -105,10 +115,16 @@ namespace Console_RPG
         public void Resolve()
         {
             Program.PrintWithColor($"--- {name} ---\n{description}\n", ConsoleColor.Yellow);
-            Thread.Sleep(2500);
+            Thread.Sleep(2000);
 
             if (!(feature is null))
+            {
+                Program.PrintWithColor("It seems there is something here..", ConsoleColor.DarkYellow);
+                Thread.Sleep(2000);
+
                 feature.Resolve();
+            }
+                
 
             List<string> choices = new List<string>();
 
@@ -140,3 +156,18 @@ namespace Console_RPG
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ඞ

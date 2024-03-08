@@ -7,14 +7,14 @@ namespace Console_RPG
 {
     class Gambler : Move
     {
-        public Gambler(int minDamage = 6, int maxDamage = 12, int critChance = 80, int missChance = 40) : base("Gambler", minDamage, maxDamage, critChance, missChance)
+        public Gambler(int minDamage = 6, int maxDamage = 12, int critChance = 100, int missChance = 40) : base("Gambler", minDamage, maxDamage, critChance, missChance)
         {
             
         }
 
         public override void Attack(Entity user, Entity target)
         {
-            int damage = Entity.random.Next(minDamage, maxDamage);
+            int damage = (int)(Entity.random.Next(minDamage, maxDamage) * user.stats.dmgModifier);
 
             if (RollForCrit() == true)
             {

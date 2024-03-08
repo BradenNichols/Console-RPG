@@ -14,7 +14,7 @@ namespace Console_RPG
 
         public override void Attack(Entity user, Entity target)
         {
-            int damage = Entity.random.Next(minDamage, maxDamage);
+            int damage = (int)(Entity.random.Next(minDamage, maxDamage) * user.stats.dmgModifier);
 
             if (RollForCrit() == true)
             {

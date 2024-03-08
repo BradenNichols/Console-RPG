@@ -41,7 +41,6 @@ namespace Console_RPG
 
             List<Move> moveset = new List<Move>();
             List<Item> backpack = new List<Item>();
-            List<Equipment> equipment = new List<Equipment>();
 
             if (EnemyType == "Bandit")
             {
@@ -62,7 +61,7 @@ namespace Console_RPG
             }
             else if (EnemyType == "Gambler Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(-5, 15), defense: 0, dodgeChance: Entity.random.Next(50, 90), deathResist: Entity.random.Next(0, 25), coinDropAmount: Entity.random.Next(5, 20));
+                stats = new Stats(speed: Entity.random.Next(-5, 15), defense: 0, dodgeChance: Entity.random.Next(40, 70), deathResist: Entity.random.Next(0, 25), coinDropAmount: Entity.random.Next(5, 20));
                 maxHP = 20;
 
                 Gambler gambler = new Gambler(minDamage: 12, maxDamage: 16, critChance: 90, missChance: 50);
@@ -70,19 +69,25 @@ namespace Console_RPG
             }
             else if (EnemyType == "Sharko")
             {
-                // TODO: Need to make this
-                stats = new Stats(speed: Entity.random.Next(2, 6), defense: 5, dodgeChance: Entity.random.Next(5, 10), deathResist: 0, coinDropAmount: Entity.random.Next(6, 12));
+                stats = new Stats(speed: Entity.random.Next(-3, 8), defense: 5, dodgeChance: 0, deathResist: 0, coinDropAmount: Entity.random.Next(6, 12));
                 maxHP = 100;
 
-                Gambler gambler = new Gambler(minDamage: 12, maxDamage: 16, critChance: 90, missChance: 50);
-                moveset.Add(gambler);
+                Slash slash = new Slash(minDamage: 12, maxDamage: 15, critChance: 10, missChance: 0);
+                slash.name = "Swing";
+
+                moveset.Add(slash);
+
+                Slash kick = new Slash(minDamage: 25, maxDamage: 30, critChance: 0, missChance: 10);
+                slash.name = "Kick";
+
+                moveset.Add(kick);
             }
             else
             {
                 moveset.Add(new Slash());
             }
 
-            return new AI(name: $"{EnemyType} {entityIndex}", maxHP, stats, moveset, backpack, equipment);
+            return new AI(name: $"{EnemyType} {entityIndex}", maxHP, stats, moveset, backpack);
         }
 
         // Battle

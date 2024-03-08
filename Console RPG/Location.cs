@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -11,14 +12,14 @@ namespace Console_RPG
         public static Location StarterInn = new Location(name: "Isle of Vigils", description: "A starting place for warriors.",
             north: StarterSea, featureType: "StarterInn");
 
-        public static Location StarterSea = new Location(name: "Etrean Sea", description: "Something lurkes in the waves..",
+        public static Location StarterSea = new Location(name: "Etrean Sea", description: "Something lurks in the waves..",
             north: ErisiaShores, south: StarterInn, featureType: "StarterSea");
 
         public static Location ErisiaShores = new Location(name: "Erisian Shores", description: "Shores to the Erisia Island.",
             east: LowerErisia, south: StarterSea, featureType: "ErisiaShores");
 
         // ERISIA
-        public static Location LowerErisia = new Location(name: "Lower Erisia", description: "A land lost, now made a battleground for warriors know not why they fight.",
+        public static Location LowerErisia = new Location(name: "Lower Erisia", description: "A lost land, now made a battleground for warriors who know not why they fight.",
             east: BanditCamp, north: UpperErisia, west: ErisiaShores, featureType: "LowerErisia");
 
         public static Location BanditCamp = new Location(name: "Bandit Camp", description: "hmm i wonder if people are here",
@@ -95,16 +96,38 @@ namespace Console_RPG
             {
                 List<string> enemies = new List<string>() { "Bandit", "Bandit", "Strong Bandit" };
                 feature = new Battle(enemies);
-            } else if (featureType == "BanditCamp")
+            }
+            else if (featureType == "BanditCamp")
             {
                 List<string> enemies = new List<string>() { "Gambler Bandit", "Strong Bandit" };
                 feature = new Battle(enemies);
-            } else if (featureType == "UpperErisia")
+            }
+            else if (featureType == "SharkoCave")
             {
-                List<Item> items = new List<Item>() { new HealthPotion("Good Potion", healAmount: 50, shopPrice: 15) };
-                items.Add(new HealthPotion("Funky Potion", healAmount: Entity.random.Next(-20, 70), shopPrice: 10));
+                List<string> enemies = new List<string>() { "Sharko" };
 
-                feature = new Shop("Derek", "hey man whats up queso", items);
+                if (Entity.random.Next(1, 4) >= 2) // 25% chance for only 1 sharko
+                    enemies.Add("Sharko");
+
+                feature = new Battle(enemies);
+            }
+            else if (featureType == "UpperErisia")
+            {
+                List<Item> items = new List<Item>();
+                items.Add(new HealthPotion("Good Potion", "Heals the target for 50hp", healAmount: 50, shopPrice: 10));
+                items.Add(new HealthPotion("Funky Potion", "Too silly to describe", healAmount: Entity.random.Next(-20, 70), shopPrice: 10));
+                
+                items.Add(new SpeedArmor("Speed Suit", "+20 speed while equipped", shopPrice: 15, speedAmount: 20));
+
+                if (Entity.random.Next(1, 2) == 1)
+                    items.Add(new VigorArmor("Vigorous Jacket", "+25% death's door resist while equipped", shopPrice: 15, resistAmount: 25));
+                else
+                    items.Add(new DefenseArmor("Heavy Mech", "+8 defense while equipped", shopPrice: 15, defenseAmount: 8));
+
+                items.Add(new Hivelords("Hivelords Hubris", "1.4x DMG while equipped", shopPrice: 20, dmgMultiplier: 1.4f));
+                items.Add(new TheButton(name: "The Button", description: "???", shopPrice: 20));
+
+                feature = new Shop("Derek", "hey man whats up!! got any derek dollars?", items);
             }
 
             this.feature = feature;

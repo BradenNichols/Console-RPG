@@ -8,7 +8,7 @@ namespace Console_RPG
     {
         public bool isResolved;
 
-        public LocationFeature(bool isResolved)
+        protected LocationFeature(bool isResolved)
         {
             this.isResolved = isResolved;
         }

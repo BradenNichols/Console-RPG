@@ -12,7 +12,7 @@ namespace Console_RPG
         public int sellPrice;
         public int weight;
 
-        public Item(string name, string description, int shopPrice = 0)
+        protected Item(string name, string description, int shopPrice = 0)
         {
             this.name = name;
             this.description = description;
@@ -22,7 +22,7 @@ namespace Console_RPG
 
         public override string ToString()
         {
-            return $"{name}: {shopPrice}¢";
+            return $"{name}: {description} | Price: {shopPrice}¢";
         }
 
         public abstract void Use(Entity user, Entity target);

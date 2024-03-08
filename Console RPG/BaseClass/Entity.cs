@@ -21,9 +21,11 @@ namespace Console_RPG
 
         public List<Move> moveset;
         public List<Item> backpack;
-        public List<Equipment> equipment;
+
+        public Equipment weapon;
+        public List<Equipment> armor;
         
-        public Entity(string name, int maxhp = 50, Stats stats = new Stats(), List<Move> moveset = null, List<Item> backpack = null, List<Equipment> equipment = null)
+        protected Entity(string name, int maxhp = 50, Stats stats = new Stats(), List<Move> moveset = null, List<Item> backpack = null)
         {
             this.name = name;
             this.health = maxhp;
@@ -36,7 +38,6 @@ namespace Console_RPG
 
             this.moveset = moveset ?? new List<Move>();
             this.backpack = backpack ?? new List<Item>();
-            this.equipment = equipment ?? new List<Equipment>();
         }
 
         // Overrides
@@ -90,6 +91,22 @@ namespace Console_RPG
         {
             item.Use(this, target);
             backpack.Remove(item);
+        }
+
+        public void Equip(Equipment equipment)
+        {
+            if (equipment.equipmentType == "Armor")
+            {
+                equipment.Use(this, this);
+                armor.Add(equipment);
+            } else if (equipment.equipmentType == "Weapon")
+            {
+                if (!(weapon is null))
+                    weapon.Use(this, this);
+
+                weapon.Use(this, this);
+                weapon = equipment;
+            }
         }
 
         // HP Stuff

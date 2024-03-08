@@ -13,7 +13,7 @@ namespace Console_RPG
         public int critChance;
         public int missChance;
 
-        public Move(string name, int minDamage, int maxDamage, int critChance = 0, int missChance = 0)
+        protected Move(string name, int minDamage, int maxDamage, int critChance = 0, int missChance = 0)
         {
             this.name = name;
             this.minDamage = minDamage;

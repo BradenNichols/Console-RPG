@@ -25,7 +25,10 @@ namespace Console_RPG
                 Console.Clear();
                 Program.PrintWithColor($"Welcome to {shopKeeperName}'s shop!\n{shopDescription}", ConsoleColor.DarkGreen);
 
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"\nHere are my wares (Bank: {Player.coins}¢):");
+
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Item result = Program.ChooseSomething(items, printClass: true, canExit: true);
 
                 if (result is Item) // if we didnt exit
@@ -58,6 +61,8 @@ namespace Console_RPG
             }
 
             Thread.Sleep(1500);
+
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
         }
     }

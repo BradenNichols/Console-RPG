@@ -12,14 +12,16 @@ namespace Console_RPG
         public int maxDamage;
         public int critChance;
         public int missChance;
+        public bool isMultiAttack;
 
-        protected Move(string name, int minDamage, int maxDamage, int critChance = 0, int missChance = 0)
+        protected Move(string name, int minDamage = 0, int maxDamage = 0, int critChance = 0, int missChance = 0, bool isMultiAttack = false)
         {
             this.name = name;
             this.minDamage = minDamage;
             this.maxDamage = maxDamage;
             this.critChance = critChance;
             this.missChance = missChance;
+            this.isMultiAttack = isMultiAttack;
         }
 
         public override string ToString()
@@ -27,13 +29,16 @@ namespace Console_RPG
             string Value = name;
             Value += $": {minDamage}-{maxDamage} DMG | {critChance}% CRIT";
 
+            if (isMultiAttack == true)
+                Value += $" | MULTI-TARGET";
+
             if (missChance > 0)
                 Value += $" | {missChance}% MISS";
 
             return Value;
         }
 
-        public abstract void Attack(Entity user, Entity target);
+        public abstract void Attack(Entity user, Entity target, Battle battle = null);
         public bool RollForCrit()
         {
             if (Entity.random.Next(1, 100) <= critChance)

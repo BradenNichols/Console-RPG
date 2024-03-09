@@ -12,7 +12,7 @@ namespace Console_RPG
             
         }
 
-        public override void Attack(Entity user, Entity target)
+        public override void Attack(Entity user, Entity target, Battle battle)
         {
             int damage = (int)(Entity.random.Next(minDamage, maxDamage) * user.stats.dmgModifier);
 
@@ -20,12 +20,14 @@ namespace Console_RPG
             {
                 Console.WriteLine($"{user.name} HIT THE BUTTON AND {target.name} COLLAPSED.");
                 damage = target.health + target.stats.defense;
-                target.stats.deathResist = 0;
+
+                if (target.onDeathsDoor == true)
+                    target.stats.deathResist = 0;
 
                 Thread.Sleep(1000);
             } else
             {
-                critChance *= 2;
+                critChance += 2;
                 Console.WriteLine($"{user.name} hit the button on {target.name}. \nYou feel the buttons' power growing..");
             }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
 
 namespace Console_RPG
 {
@@ -11,20 +10,37 @@ namespace Console_RPG
             // Setup
 
             Console.CursorSize = 100;
-            Console.WindowHeight = 50;
+            //Console.WindowHeight = 50;
             Console.Title = "deepwoken";
+
+            // Locations
+
+            Location.StarterInn.SetNearbyLocations(north: Location.StarterSea);
+            Location.StarterSea.SetNearbyLocations(north: Location.ErisiaShores);
+            Location.ErisiaShores.SetNearbyLocations(east: Location.LowerErisia);
+
+            Location.LowerErisia.SetNearbyLocations(east: Location.BanditCamp, north: Location.UpperErisia);
+            Location.BanditCamp.SetNearbyLocations(east: Location.SharkoCave, north: Location.UpperErisia);
+            Location.SharkoCave.SetNearbyLocations(east: Location.UpperErisia);
+
+            Location.UpperErisia.SetNearbyLocations(east: Location.Gardens);
+            Location.Gardens.SetNearbyLocations(south: Location.DukesManor);
 
             // Party
 
             Player.player1.moveset.Add(new Slash());
             Player.player1.moveset.Add(new Gambler());
 
-            Player.player2.moveset.Add(new Slash(critChance: 0, maxDamage: 52));
+            Slash gokuSlash = new Slash(critChance: Entity.random.Next(1, 5), minDamage: 10, maxDamage: 52);
+            gokuSlash.name = "Epic Slash";
 
-            Player.player1.backpack.Add(new HealthPotion("Small Potion", healAmount: 25));
+            Player.player2.moveset.Add(gokuSlash);
+            Player.player2.moveset.Add(new Bounce());
 
-            Player.player2.backpack.Add(new HealthPotion("Goku Potion", healAmount: 80));
-            Player.player2.backpack.Add(new HealthPotion("Small Potion", healAmount: 25));
+            Player.player1.backpack.Add(new HealthPotion("Small Potion", healAmount: 35));
+
+            Player.player2.backpack.Add(new HealthPotion("Goku Potion", healAmount: 90));
+            Player.player2.backpack.Add(new HealthPotion("Small Potion", healAmount: 35));
 
             // AI
             /*
@@ -56,7 +72,11 @@ namespace Console_RPG
 
             // Actual Gameplay
 
-            Location.StarterInn.Resolve();
+            Player.hasManorKey = true;
+            Player.coins = 75;
+            Location.Gardens.Resolve();
+
+            //Location.StarterInn.Resolve();
 
         }
 

@@ -13,27 +13,27 @@ namespace Console_RPG
         private List<Entity> turnOrder;
 
         public int round = 0;
+        public int entityIndex = 1;
+
         private bool hasGottenItem = false;
 
         public Battle(List<string> enemies): base(false)
         {
-            this.party = Player.party;
+            this.party = Battle.GetValid(Player.party);
             this.enemies = new List<Entity>();
 
             // Make Enemies
 
-            int entityIndex = 1;
-
             foreach(string enemyType in enemies)
             {
-                this.enemies.Add(CreateEnemy(enemyType, entityIndex));
+                this.enemies.Add(CreateEnemy(enemyType));
                 entityIndex++;
             }
         }
 
         // Battles
 
-        AI CreateEnemy(string EnemyType, int entityIndex)
+        public AI CreateEnemy(string EnemyType)
         {
             // Creation
             int maxHP = default;
@@ -44,25 +44,25 @@ namespace Console_RPG
 
             if (EnemyType == "Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(2, 5), defense: Entity.random.Next(-1, 4), dodgeChance: Entity.random.Next(0, 15), coinDropAmount: Entity.random.Next(2, 4));
+                stats = new Stats(speed: Entity.random.Next(2, 5), defense: Entity.random.Next(-1, 4), dodgeChance: Entity.random.Next(0, 15), coinDropAmount: Entity.random.Next(3, 7));
                 maxHP = 40;
 
                 moveset.Add(new Slash(missChance: 5, minDamage: 6, maxDamage: 16, critChance: 4));
             }
             else if (EnemyType == "Strong Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25), coinDropAmount: Entity.random.Next(4, 8));
-                maxHP = 75;
+                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25), coinDropAmount: Entity.random.Next(5, 11));
+                maxHP = 60;
 
-                Slash slash = new Slash(minDamage: 14, maxDamage: 20, critChance: 15, missChance: 10);
+                Slash slash = new Slash(minDamage: 14, maxDamage: 20, critChance: 15, missChance: 15);
                 slash.name = "Super Slash";
 
                 moveset.Add(slash);
             }
             else if (EnemyType == "Gambler Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(-5, 15), defense: 0, dodgeChance: Entity.random.Next(40, 70), deathResist: Entity.random.Next(0, 25), coinDropAmount: Entity.random.Next(5, 20));
-                maxHP = 20;
+                stats = new Stats(speed: Entity.random.Next(-5, 15), defense: 0, dodgeChance: Entity.random.Next(40, 70), deathResist: Entity.random.Next(0, 25), coinDropAmount: Entity.random.Next(11, 17));
+                maxHP = 10;
 
                 Gambler gambler = new Gambler(minDamage: 12, maxDamage: 16, critChance: 90, missChance: 50);
                 moveset.Add(gambler);
@@ -70,7 +70,7 @@ namespace Console_RPG
             else if (EnemyType == "Sharko")
             {
                 stats = new Stats(speed: Entity.random.Next(-3, 8), defense: 5, dodgeChance: 0, deathResist: 0, coinDropAmount: Entity.random.Next(6, 12));
-                maxHP = 100;
+                maxHP = 50;
 
                 Slash slash = new Slash(minDamage: 12, maxDamage: 15, critChance: 10, missChance: 0);
                 slash.name = "Swing";
@@ -81,6 +81,34 @@ namespace Console_RPG
                 slash.name = "Kick";
 
                 moveset.Add(kick);
+            }
+            else if (EnemyType == "Duke Erisia")
+            {
+                stats = new Stats(speed: Entity.random.Next(8, 14), defense: 12, dodgeChance: Entity.random.Next(1, 4), deathResist: Entity.random.Next(60, 80), coinDropAmount: Entity.random.Next(1000, 10000));
+                maxHP = 400;
+
+                Slash strongLeft = new Slash(minDamage: 18, maxDamage: 46, critChance: 35, missChance: 0);
+                strongLeft.name = "Strong Left";
+
+                moveset.Add(strongLeft);
+
+                Bounce cages = new Bounce(minDamage: 22, maxDamage: 42, critChance: 20, missChance: 0);
+                cages.name = "Binding Tempest";
+
+                moveset.Add(cages);
+
+                moveset.Add(new Vent());
+                moveset.Add(new Servants());
+            }
+            else if (EnemyType == "Duke's Servant")
+            {
+                stats = new Stats(speed: Entity.random.Next(-12, -4), defense: 0, dodgeChance: 0, deathResist: 1, coinDropAmount: Entity.random.Next(10, 100));
+                maxHP = 10;
+
+                Slash slash = new Slash(minDamage: 3, maxDamage: 8, critChance: 30, missChance: 5);
+                slash.name = "Swing";
+
+                moveset.Add(slash);
             }
             else
             {
@@ -112,18 +140,34 @@ namespace Console_RPG
             Thread.Sleep(1000);
 
             if (PartyAlive == false)
-                Program.PrintWithColor("Sent to the Depths..", ConsoleColor.DarkRed);
+            {
+                lostGame = true;
+
+                Console.Clear();
+                Program.PrintWithColor("\nSent to the Depths..", ConsoleColor.DarkRed);
+            }
             else
             {
                 Program.PrintWithColor("\nBattle won!", ConsoleColor.Cyan);
 
                 int coinsGained = 0;
 
-                foreach(Entity entity in enemies)
+                foreach (Entity entity in enemies)
                     coinsGained += entity.stats.coinDropAmount;
 
                 Program.PrintWithColor($"{coinsGained}¢ acquired!", ConsoleColor.Cyan);
                 Player.coins += coinsGained;
+
+                // Revive from Death's Door
+
+                foreach (Entity entity in party)
+                {
+                    if (entity.onDeathsDoor == true)
+                    {
+                        entity.onDeathsDoor = false;
+                        entity.health = 1;
+                    }
+                }
             }
 
             Thread.Sleep(3000);
@@ -225,7 +269,7 @@ namespace Console_RPG
             Console.WriteLine($"\n{entity.name}'s turn!\n");
             Console.ForegroundColor = ConsoleColor.White;
 
-            string action = "";
+            string action;
             int stupidTimes = 0;
 
             while (true)
@@ -266,11 +310,24 @@ namespace Console_RPG
             if (action == "Attack")
             {
                 Move move = entity.ChooseMove(entity.moveset);
+                List<Entity> validChoices = GetValid(GetTeam(entity, otherTeam: true));
 
-                Entity target = entity.ChooseTarget(move.name, GetValid(GetTeam(entity, otherTeam: true)));
+                if (move.isMultiAttack == true)
+                {
+                    foreach (Entity target in validChoices)
+                    {
+                        entity.Attack(target, move, this);
 
-                Console.ForegroundColor = ConsoleColor.White;
-                entity.Attack(target, move);
+                        Thread.Sleep(2000);
+                        Console.ResetColor();
+                    }
+                } else
+                {
+                    Entity target = entity.ChooseTarget(move.name, validChoices);
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    entity.Attack(target, move, this);
+                }
             } else if (action == "Item")
             {
                 Item item = entity.ChooseItem(entity.backpack);
@@ -303,7 +360,7 @@ namespace Console_RPG
             }
         }
 
-        public List<Entity> GetValid(List<Entity> group)
+        public static List<Entity> GetValid(List<Entity> group)
         {
             List<Entity> entities = new List<Entity>();
 

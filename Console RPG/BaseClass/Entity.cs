@@ -38,6 +38,7 @@ namespace Console_RPG
 
             this.moveset = moveset ?? new List<Move>();
             this.backpack = backpack ?? new List<Item>();
+            this.armor = new List<Equipment>();
         }
 
         // Overrides
@@ -71,7 +72,7 @@ namespace Console_RPG
 
         // Non-Abstract Functions
         
-        public void Attack(Entity target, Move move)
+        public void Attack(Entity target, Move move, Battle battle)
         {
             if (Entity.random.Next(1, 100) <= move.missChance)
             {
@@ -84,7 +85,7 @@ namespace Console_RPG
                 return;
             } 
 
-            move.Attack(this, target);
+            move.Attack(this, target, battle);
         }
 
         public void UseItem(Item item, Entity target)
@@ -104,7 +105,7 @@ namespace Console_RPG
                 if (!(weapon is null))
                     weapon.Use(this, this);
 
-                weapon.Use(this, this);
+                equipment.Use(this, this);
                 weapon = equipment;
             }
         }

@@ -6,7 +6,7 @@ namespace Console_RPG
     {
         public float dmgMultiplier;
 
-        public Hivelords(string name, string description = "", int shopPrice = default, float dmgMultiplier = 1.4f) : base(name, description, shopPrice, "Weapon")
+        public Hivelords(string name, string description = "", int shopPrice = default, float dmgMultiplier = 0.4f) : base(name, description, shopPrice, "Weapon")
         {
             this.dmgMultiplier = dmgMultiplier;
         }

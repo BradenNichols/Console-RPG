@@ -23,29 +23,33 @@ namespace Console_RPG
             while (true)
             {
                 Console.Clear();
-                Program.PrintWithColor($"Welcome to {shopKeeperName}'s shop!\n{shopDescription}", ConsoleColor.DarkGreen);
+                Program.PrintWithColor($"({shopKeeperName})\nHey, welcome to my shop.\n{shopDescription}", ConsoleColor.DarkGreen);
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"\nHere are my wares (Bank: {Player.coins}¢):");
+                Console.WriteLine($"\nThis is all I've got left. (Player Bank: {Player.coins}¢)");
 
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Item result = Program.ChooseSomething(items, printClass: true, canExit: true);
 
                 if (result is Item) // if we didnt exit
                 {
-                    if (result.shopPrice > Player.coins || Entity.random.Next(1, 100) <= 5)
+                    if (result.shopPrice > Player.coins)
                     {
-                        Console.Clear();
-                        Program.PrintWithColor("NO!", ConsoleColor.Red);
+                        Program.PrintWithColor("\nNO! ur too broke", ConsoleColor.Red);
+                        Thread.Sleep(1500);
                     }
                     else
                     {
                         Player.coins -= result.shopPrice;
-                        Program.PrintWithColor("YES! who shall have thee item?", ConsoleColor.Green);
+                        Program.PrintWithColor("OF COURSE! Who shall have thee item?", ConsoleColor.DarkGreen);
 
-                        Entity playerToGetIt = Program.ChooseSomething(Player.party);
-                        playerToGetIt.backpack.Add(result);
+                        Entity playerToGetIt = Program.ChooseSomething(Battle.GetValid(Player.party));
                         items.Remove(result);
+
+                        if (result is Equipment)
+                            playerToGetIt.Equip((Equipment)result);
+                        else
+                            playerToGetIt.backpack.Add(result);
 
                         Program.PrintWithColor($"Gave {result.name} to {playerToGetIt.name}!", ConsoleColor.Green);
                         Thread.Sleep(1500);
@@ -54,13 +58,13 @@ namespace Console_RPG
                 else
                 {
                     Console.Clear();
-                    Program.PrintWithColor("BYE!", ConsoleColor.Red);
+                    Program.PrintWithColor("You may have a chance to stand up to him..", ConsoleColor.DarkGreen);
 
                     break;
                 }
             }
 
-            Thread.Sleep(1500);
+            Thread.Sleep(2500);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();

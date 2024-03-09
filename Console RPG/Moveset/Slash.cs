@@ -12,18 +12,18 @@ namespace Console_RPG
             
         }
 
-        public override void Attack(Entity user, Entity target)
+        public override void Attack(Entity user, Entity target, Battle battle)
         {
             int damage = (int)(Entity.random.Next(minDamage, maxDamage) * user.stats.dmgModifier);
 
             if (RollForCrit() == true)
             {
                 damage *= 2;
-                Console.WriteLine($"{user.name} attacked {target.name} with {name} and landed a {damage} ({target.stats.defense} DEF) damage CRIT!");
+                Console.WriteLine($"{user.name} used {name} on {target.name} for a {damage} ({target.stats.defense} DEF) damage CRIT!");
 
                 Thread.Sleep(1000);
             } else
-                Console.WriteLine($"{user.name} attacked {target.name} with {name} and dealt {damage} ({target.stats.defense} DEF) damage!");
+                Console.WriteLine($"{user.name} used {name} on {target.name} for {damage} ({target.stats.defense} DEF) damage!");
 
             target.Damage(damage);
         }

@@ -5,9 +5,9 @@ using System.Threading;
 
 namespace Console_RPG
 {
-    class Gambler : Move
+    class Bounce : Move
     {
-        public Gambler(int minDamage = 6, int maxDamage = 12, int critChance = 100, int missChance = 40) : base("Gambler", minDamage, maxDamage, critChance, missChance)
+        public Bounce(int minDamage = 10, int maxDamage = 18, int critChance = 15, int missChance = 5) : base("Bounce", minDamage, maxDamage, critChance, missChance, true)
         {
             
         }
@@ -18,12 +18,12 @@ namespace Console_RPG
 
             if (RollForCrit() == true)
             {
-                damage *= 8;
-                Console.WriteLine($"{user.name} HIT IT BIG ON {target.name} WITH A {damage} ({target.stats.defense} DEF) DAMAGE CRIT!");
+                damage *= 2;
+                Console.WriteLine($"{user.name} used {name} on {target.name} for a {damage} ({target.stats.defense} DEF) damage CRIT!");
 
                 Thread.Sleep(1000);
             } else
-                Console.WriteLine($"{user.name} gambled and lost on {target.name}, dealing {damage} ({target.stats.defense} DEF) damage.");
+                Console.WriteLine($"{user.name} used {name} on {target.name} for {damage} ({target.stats.defense} DEF) damage!");
 
             target.Damage(damage);
         }

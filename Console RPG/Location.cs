@@ -10,77 +10,83 @@ namespace Console_RPG
     {
         // ETREAN SEA
         public static Location StarterInn = new Location(name: "Isle of Vigils", description: "A starting place for warriors.",
-            north: StarterSea, featureType: "StarterInn");
+            featureType: "StarterInn");
 
         public static Location StarterSea = new Location(name: "Etrean Sea", description: "Something lurks in the waves..",
-            north: ErisiaShores, south: StarterInn, featureType: "StarterSea");
+            featureType: "StarterSea");
 
         public static Location ErisiaShores = new Location(name: "Erisian Shores", description: "Shores to the Erisia Island.",
-            east: LowerErisia, south: StarterSea, featureType: "ErisiaShores");
+            featureType: "ErisiaShores");
 
         // ERISIA
         public static Location LowerErisia = new Location(name: "Lower Erisia", description: "A lost land, now made a battleground for warriors who know not why they fight.",
-            east: BanditCamp, north: UpperErisia, west: ErisiaShores, featureType: "LowerErisia");
+            featureType: "LowerErisia");
 
         public static Location BanditCamp = new Location(name: "Bandit Camp", description: "hmm i wonder if people are here",
-            east: SharkoCave, west: LowerErisia, north: UpperErisia, featureType: "BanditCamp");
+            featureType: "BanditCamp");
 
         public static Location SharkoCave = new Location(name: "Unknown Cave", description: "...?",
-            east: UpperErisia, west: BanditCamp, featureType: "SharkoCave");
+            featureType: "SharkoCave");
         
-        public static Location UpperErisia = new Location(name: "Upper Erisia", description: "lalalalala",
-            east: Gardens, west: SharkoCave, featureType: "UpperErisia");
+        public static Location UpperErisia = new Location(name: "Upper Erisia", description: "The highest peaks of Erisia can be seen from anywhere.",
+            featureType: "UpperErisia");
 
-        public static Location Gardens = new Location(name: "Burning Stone Gardens", description: "lalalalala",
-            south: DukesManor, north: UpperErisia);
+        public static Location Gardens = new Location(name: "Burning Stone Gardens", description: "Acid runs along the stones, giving way to a forest guarded by immortal giants.",
+            featureType: "Gardens");
 
-        public static Location DukesManor = new Location(name: "Strange Manor", description: "lalalalala",
-            south: HisRoom, north: Gardens);
-
-        public static Location HisRoom = new Location(name: "???", description: "lalalalala",
-            north: Gardens);
+        public static Location DukesManor = new Location(name: "Strange Manor", description: "What was stolen from below lies within.", 
+            featureType: "Manor");
 
         // Class
 
         public string name;
         public string description;
+
         public LocationFeature feature;
+        public string featureType;
 
         public Location north, east, south, west;
 
-        public Location(string name, string description = "", string featureType = "", Location north = null, Location east = null, Location south = null, Location west = null)
+        public Location(string name, string description = "", string featureType = "")
         {
             this.name = name;
             this.description = description;
 
             SetLocationFeature(featureType);
-            SetNearbyLocations(north, east, south, west);
         }
 
         public void SetNearbyLocations(Location north = null, Location east = null, Location south = null, Location west = null)
         {
-            this.north = north;
-            this.east = east;
-            this.south = south;
-            this.west = west;
-
             if (!(north is null))
+            {
+                this.north = north;
                 north.south = this;
-
+            }
+ 
             if (!(east is null))
+            {
+                this.east = east;
                 east.west = this;
-
+            }
+                
             if (!(south is null))
+            {
+                this.south = south;
                 south.north = this;
+            }
 
             if (!(west is null))
+            {
+                this.west = west;
                 west.east = this;
+            }     
         }
 
         // Set Feature
 
         void SetLocationFeature(string featureType)
         {
+            this.featureType = featureType;
             LocationFeature feature = null;
 
             if (featureType == "ErisiaShores")
@@ -111,11 +117,11 @@ namespace Console_RPG
 
                 feature = new Battle(enemies);
             }
-            else if (featureType == "UpperErisia")
+            else if (featureType == "Gardens")
             {
                 List<Item> items = new List<Item>();
                 items.Add(new HealthPotion("Good Potion", "Heals the target for 50hp", healAmount: 50, shopPrice: 10));
-                items.Add(new HealthPotion("Funky Potion", "Too silly to describe", healAmount: Entity.random.Next(-20, 70), shopPrice: 10));
+                items.Add(new HealthPotion("Funky Potion", "Too silly to describe", healAmount: Entity.random.Next(-20, 130), shopPrice: 10));
                 
                 items.Add(new SpeedArmor("Speed Suit", "+20 speed while equipped", shopPrice: 15, speedAmount: 20));
 
@@ -124,10 +130,14 @@ namespace Console_RPG
                 else
                     items.Add(new DefenseArmor("Heavy Mech", "+8 defense while equipped", shopPrice: 15, defenseAmount: 8));
 
-                items.Add(new Hivelords("Hivelords Hubris", "1.4x DMG while equipped", shopPrice: 20, dmgMultiplier: 1.4f));
+                items.Add(new Hivelords("Hivelords Hubris", "1.4x DMG while equipped", shopPrice: 20));
                 items.Add(new TheButton(name: "The Button", description: "???", shopPrice: 20));
 
-                feature = new Shop("Derek", "hey man whats up!! got any derek dollars?", items);
+                feature = new Shop("Derek", "Got any derek dollars?", items);
+            } 
+            else if (featureType == "Manor")
+            {
+                feature = new Manor();
             }
 
             this.feature = feature;
@@ -146,8 +156,19 @@ namespace Console_RPG
                 Thread.Sleep(2000);
 
                 feature.Resolve();
+
+                if (feature.lostGame == true || feature.noResolve == true)
+                    return;
+
+                if (featureType == "SharkoCave" && Player.hasManorKey == false)
+                {
+                    Program.PrintWithColor("You check your pocket and notice a mysterious key..", ConsoleColor.DarkRed);
+                    Player.hasManorKey = true;
+
+                    Thread.Sleep(3000);
+                    Console.Clear();
+                }
             }
-                
 
             List<string> choices = new List<string>();
 

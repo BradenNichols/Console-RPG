@@ -5,15 +5,16 @@ namespace Console_RPG
 {
     class Player : Entity
     {
-        public static Player player1 = new Player("Lapis", maxhp: 75,
-            new Stats(defense: Entity.random.Next(2, 7), speed: Entity.random.Next(1, 5), deathResist: Entity.random.Next(40, 65), dodgeChance: Entity.random.Next(5, 25)));
+        public static Player player1 = new Player("Lapis", maxhp: 100,
+            new Stats(defense: Entity.random.Next(2, 8), speed: Entity.random.Next(2, 7), deathResist: Entity.random.Next(60, 90), dodgeChance: Entity.random.Next(8, 25)));
 
         public static Player player2 = new Player("Goku", maxhp: 400,
-            new Stats(defense: Entity.random.Next(-50, -20), speed: 10, deathResist: Entity.random.Next(50, 85), dodgeChance: Entity.random.Next(2, 4)));
+            new Stats(defense: Entity.random.Next(-30, -15), speed: 10, deathResist: Entity.random.Next(50, 85), dodgeChance: Entity.random.Next(3, 8)));
 
         public static List<Entity> party = new List<Entity> { player1, player2 };
 
         public static int coins = 0;
+        public static bool hasManorKey = false;
 
         public Player(string name, int maxhp = default, Stats stats = default) : base(name, maxhp, stats)
         {

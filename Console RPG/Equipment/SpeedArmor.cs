@@ -16,11 +16,11 @@ namespace Console_RPG
             if (isEquipped == false)
             {
                 target.stats.speed += speedAmount;
-                Program.PrintWithColor($"Equipped {name}: increased {target.name} speed by {speedAmount}%.", ConsoleColor.DarkCyan);
+                Program.PrintWithColor($"Equipped {name}: increased {target.name} speed by {speedAmount}.", ConsoleColor.DarkCyan);
             } else
             {
                 target.stats.speed -= speedAmount;
-                Program.PrintWithColor($"Unequipped {name}, reducing {target.name} speed by {speedAmount}%.", ConsoleColor.DarkMagenta);
+                Program.PrintWithColor($"Unequipped {name}, reducing {target.name} speed by {speedAmount}.", ConsoleColor.DarkMagenta);
             }
 
             isEquipped = !isEquipped;

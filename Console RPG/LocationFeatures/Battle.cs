@@ -51,7 +51,7 @@ namespace Console_RPG
             }
             else if (EnemyType == "Strong Bandit")
             {
-                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25), coinDropAmount: Entity.random.Next(5, 11));
+                stats = new Stats(speed: Entity.random.Next(4, 7), defense: Entity.random.Next(5, 8), dodgeChance: Entity.random.Next(0, 5), deathResist: Entity.random.Next(10, 25), coinDropAmount: Entity.random.Next(5, 8));
                 maxHP = 60;
 
                 Slash slash = new Slash(minDamage: 14, maxDamage: 20, critChance: 15, missChance: 15);
@@ -69,7 +69,7 @@ namespace Console_RPG
             }
             else if (EnemyType == "Sharko")
             {
-                stats = new Stats(speed: Entity.random.Next(-3, 8), defense: 5, dodgeChance: 0, deathResist: 0, coinDropAmount: Entity.random.Next(6, 12));
+                stats = new Stats(speed: Entity.random.Next(-3, 8), defense: 5, dodgeChance: 0, deathResist: 0, coinDropAmount: Entity.random.Next(4, 9));
                 maxHP = 50;
 
                 Slash slash = new Slash(minDamage: 12, maxDamage: 15, critChance: 10, missChance: 0);

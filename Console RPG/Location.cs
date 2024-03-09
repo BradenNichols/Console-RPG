@@ -125,10 +125,10 @@ namespace Console_RPG
                 
                 items.Add(new SpeedArmor("Speed Suit", "+20 speed while equipped", shopPrice: 15, speedAmount: 20));
 
-                if (Entity.random.Next(1, 2) == 1)
-                    items.Add(new VigorArmor("Vigorous Jacket", "+25% death's door resist while equipped", shopPrice: 15, resistAmount: 25));
+                if (Entity.random.Next(1, 100) <= 50)
+                    items.Add(new VigorArmor("Vigorous Jacket", "+35% death's door resist while equipped", shopPrice: 15, resistAmount: 35));
                 else
-                    items.Add(new DefenseArmor("Heavy Mech", "+8 defense while equipped", shopPrice: 15, defenseAmount: 8));
+                    items.Add(new DefenseArmor("Heavy Mech", "+10 defense while equipped", shopPrice: 15, defenseAmount: 10));
 
                 items.Add(new Hivelords("Hivelords Hubris", "1.4x DMG while equipped", shopPrice: 20));
                 items.Add(new TheButton(name: "The Button", description: "???", shopPrice: 20));

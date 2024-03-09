@@ -84,8 +84,8 @@ namespace Console_RPG
             }
             else if (EnemyType == "Duke Erisia")
             {
-                stats = new Stats(speed: Entity.random.Next(8, 14), defense: 12, dodgeChance: Entity.random.Next(1, 4), deathResist: Entity.random.Next(60, 80), coinDropAmount: Entity.random.Next(1000, 10000));
-                maxHP = 500;
+                stats = new Stats(speed: Entity.random.Next(8, 18), defense: 12, dodgeChance: Entity.random.Next(1, 5), deathResist: Entity.random.Next(60, 80), coinDropAmount: Entity.random.Next(1000, 10000));
+                maxHP = 450;
 
                 Slash strongLeft = new Slash(minDamage: 18, maxDamage: 46, critChance: 35, missChance: 0);
                 strongLeft.name = "Strong Left";
@@ -96,16 +96,17 @@ namespace Console_RPG
                 cages.name = "Binding Tempest";
 
                 moveset.Add(cages);
+                moveset.Add(cages);
 
-                moveset.Add(new Vent());
+                moveset.Add(new Vent(missChance: 5));
                 moveset.Add(new Servants());
             }
             else if (EnemyType == "Duke's Servant")
             {
-                stats = new Stats(speed: Entity.random.Next(-12, -4), defense: 0, dodgeChance: 0, deathResist: 1, coinDropAmount: Entity.random.Next(10, 100));
+                stats = new Stats(speed: Entity.random.Next(-7, 0), defense: 1, dodgeChance: 1, deathResist: 1, coinDropAmount: Entity.random.Next(10, 100));
                 maxHP = 10;
 
-                Slash slash = new Slash(minDamage: 3, maxDamage: 8, critChance: 30, missChance: 5);
+                Slash slash = new Slash(minDamage: 3, maxDamage: 9, critChance: 40, missChance: 5);
                 slash.name = "Swing";
 
                 moveset.Add(slash);

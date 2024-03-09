@@ -85,7 +85,7 @@ namespace Console_RPG
             else if (EnemyType == "Duke Erisia")
             {
                 stats = new Stats(speed: Entity.random.Next(8, 14), defense: 12, dodgeChance: Entity.random.Next(1, 4), deathResist: Entity.random.Next(60, 80), coinDropAmount: Entity.random.Next(1000, 10000));
-                maxHP = 400;
+                maxHP = 500;
 
                 Slash strongLeft = new Slash(minDamage: 18, maxDamage: 46, critChance: 35, missChance: 0);
                 strongLeft.name = "Strong Left";

@@ -7,7 +7,7 @@ namespace Console_RPG
 {
     class Button : Move
     {
-        public Button(int minDamage = 1, int maxDamage = 2, int critChance = 1, int missChance = 15) : base("Push Button", minDamage, maxDamage, critChance, missChance)
+        public Button(int minDamage = 1, int maxDamage = 2, int critChance = 2, int missChance = 15) : base("Push Button", minDamage, maxDamage, critChance, missChance)
         {
             
         }
@@ -27,7 +27,7 @@ namespace Console_RPG
                 Thread.Sleep(1000);
             } else
             {
-                critChance += 2;
+                critChance += 1;
                 Console.WriteLine($"{user.name} hit the button on {target.name}. \nYou feel the buttons' power growing..");
             }
 

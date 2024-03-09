@@ -16,12 +16,12 @@ namespace Console_RPG
             if (isEquipped == false)
             {
                 target.stats.defense += defenseAmount;
-                Program.PrintWithColor($"Equipped {name}: increased {target.name} defense by {defenseAmount}%.", ConsoleColor.DarkCyan);
+                Program.PrintWithColor($"Equipped {name}: increased {target.name} defense by {defenseAmount}.", ConsoleColor.DarkCyan);
             }
             else
             {
                 target.stats.defense -= defenseAmount;
-                Program.PrintWithColor($"Unequipped {name}, reducing {target.name} defense by {defenseAmount}%.", ConsoleColor.DarkMagenta);
+                Program.PrintWithColor($"Unequipped {name}, reducing {target.name} defense by {defenseAmount}.", ConsoleColor.DarkMagenta);
             }
 
             isEquipped = !isEquipped;

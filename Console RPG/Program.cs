@@ -11,7 +11,7 @@ namespace Console_RPG
 
             Console.CursorSize = 100;
             //Console.WindowHeight = 50;
-            Console.Title = "deepwoken";
+            Console.Title = "deepwoken rpg";
 
             // Locations
 
@@ -42,42 +42,9 @@ namespace Console_RPG
             Player.player2.backpack.Add(new HealthPotion("Goku Potion", healAmount: 90));
             Player.player2.backpack.Add(new HealthPotion("Small Potion", healAmount: 35));
 
-            // AI
-            /*
-
-            AI duke = new AI("Duke Erisia", maxhp: 500, new Stats(defense: 0, speed: -5, debuffResist: 50, deathResist: 0, dodgeChance: Entity.random.Next(5, 15))); // L L haha hah ah a L
-            AI wawawawawa = new AI("the button", maxhp: 1, new Stats(defense: 10, speed: 26, debuffResist: 0, deathResist: 0, dodgeChance: Entity.random.Next(40, 50)));
-            
-           duke.moveset.Add(new Slash(minDamage: 6, maxDamage: 30, critChance: 20));
-            wawawawawa.moveset.Add(new Slash(critChance: 75));
-             
-            */
-            // Items
-            /*
-            HealthPotion potion1 = new HealthPotion("Potion1", "one", 10);
-            HealthPotion potiondead = new HealthPotion("Potiondead", "two", -20);
-            */
-
-            /*
-            Location meow = new Location("car", "mew");
-            Location wawawa = new Location("idk", "in the land");
-
-            meow.SetNearbyLocations(south: wawawa);*/
-
-            /*
-            List<Entity> enemies = new List<Entity>() { duke, wawawawawa };
-            
-            Battle test = new Battle(party, enemies);
-            test.StartBattle();*/
-
             // Actual Gameplay
 
-            Player.hasManorKey = true;
-            Player.coins = 75;
-            Location.Gardens.Resolve();
-
-            //Location.StarterInn.Resolve();
-
+            Location.StarterInn.Resolve();
         }
 
         // Helpers

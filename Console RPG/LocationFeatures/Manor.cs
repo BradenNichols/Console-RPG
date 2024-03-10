@@ -68,6 +68,9 @@ namespace Console_RPG
                     Battle dukeBattle = new Battle(new List<string> { "Duke Erisia" });
                     dukeBattle.Resolve();
 
+                    if (dukeBattle.lostGame == true)
+                        return;
+
                     Console.Clear();
 
                     Program.PrintWithColor("You win!! You took down the great Duke Erisia, congrats", ConsoleColor.DarkCyan);
